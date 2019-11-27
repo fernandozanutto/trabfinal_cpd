@@ -16,6 +16,8 @@ public:
     
     Movie(int _id){
         id = _id;
+        num_ratings = 0;
+        sum_ratings = 0;
     }
     
     Movie(int _id, int _n, double _r){
@@ -135,11 +137,10 @@ int main(){
         getline(s, word, ',');
         double r = stod(word);
         
-        Movie m(movieId, 1, r);
+        hashRatings[movieId].num_ratings += 1;
+        hashRatings[movieId].sum_ratings += r;
         
-        cout << m.toString() << endl;
-        
-        hashRatings[movieId] = m;
+        //cout << hashRatings[movieId].toString() << endl;
         
     }
 
