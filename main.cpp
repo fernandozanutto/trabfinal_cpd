@@ -93,9 +93,9 @@ public:
  Chave: id do filme
  Dados: 
 */
-class HashFilmes: public Hash<int, Movie> {
+class HashMovies: public Hash<int, Movie> {
 public:
-    HashFilmes(int s) : Hash(s) {}
+    HashMovies(int s) : Hash(s) {}
     
     int hashFunction(int x) {
         x = ((x >> 16) ^ x) * 0x45d9f3b;
@@ -114,13 +114,12 @@ int main(){
     /*
     Loading movies rating
     */
-    HashFilmes hashRatings(5471); // ~27k movies
+    HashMovies hashRatings(5471); // ~27k movies
     
     fstream rating;
     rating.open("minirating.csv", ios::in);
-    string temp,b;
+    string temp;
     getline(rating, temp);
-    cout << temp << endl;
     
     while(getline(rating, temp)){
         //cout << temp << endl;
@@ -129,7 +128,6 @@ int main(){
         string word;
         
         getline(s, word, ',');
-        //cout << word << endl;
         
         int userId = stoi(word);
         getline(s, word, ',');
@@ -140,11 +138,8 @@ int main(){
         hashRatings[movieId].num_ratings += 1;
         hashRatings[movieId].sum_ratings += r;
         
-        //cout << hashRatings[movieId].toString() << endl;
-        
+        //cout << hashRatings[movieId].toString() << endl;   
     }
-
-    
 
     return 0;
 
