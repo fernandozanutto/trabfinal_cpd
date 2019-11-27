@@ -3,9 +3,15 @@
 using namespace std;
 
 
-class User{
+class User  {
+public:
     int id;
-    vector<pair<int,int>> ratings;
+    
+    User(int _id){
+        id = _id;        
+    }
+    
+    vector<pair<int,int>> ratings; // pair <movieId, rating>
 };
 
 class Movie {
@@ -100,6 +106,7 @@ int main(){
     Loading movies rating
     */
     Hash<Movie> hashRatings(5471); // ~27k movies
+    Hash<User> hashUsers(1000);
     
     fstream rating;
     rating.open("minirating.csv", ios::in);
@@ -121,6 +128,8 @@ int main(){
         
         hashRatings[movieId].num_ratings += 1;
         hashRatings[movieId].sum_ratings += r;
+        
+        hashUsers[userId].ratings.push_back({movieId, r});
         
         //cout << hashRatings[movieId].toString() << endl;   
     }
