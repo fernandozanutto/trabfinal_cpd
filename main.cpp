@@ -30,42 +30,49 @@ public:
         ostringstream buffer;
         
         buffer << "ID: " << id << " Num ratings: " << num_ratings << " Soma: " << sum_ratings << endl;
-        
         return buffer.str();
     }
     
 };
 
-template <class T, class K>
+template <class K>
 class Hash {
 
-public:
+private:
+
     int size;
     vector<vector<K>> table;
     
-    virtual int hashFunction(T s) = 0;
-
+public:   
     Hash(int s){
         size = s;
         table.assign(s, vector<K>());
     }
     
+    int hashFunction(int x) {
+        x = ((x >> 16) ^ x) * 0x45d9f3b;
+        x = ((x >> 16) ^ x) * 0x45d9f3b;
+        x = (x >> 16) ^ x;
+
+        return x % size;
+    }
+
     void insert(K s){
         int pos = hashFunction(s.getIdentifier());
         table[pos].push_back(s);
     }
     
-    T search(T s){
+    int search(int s){
         int pos = hashFunction(s);
         
         for(int i=0; i < table[pos].size(); i++){
             if(s == table[pos][i])
                 return table[pos][i];
         }
-        return;
+        return -1;
     }
     
-    K &operator[](T index){
+    K &operator[](int index){
         int pos = hashFunction(index);
 
         if (table[pos].size() == 0){
@@ -83,38 +90,16 @@ public:
 
             table[pos].push_back(K(index));
             return table[pos][i];
-        
         }
-    
     }
 };
-
-/*
- Chave: id do filme
- Dados: 
-*/
-class HashMovies: public Hash<int, Movie> {
-public:
-    HashMovies(int s) : Hash(s) {}
-    
-    int hashFunction(int x) {
-        x = ((x >> 16) ^ x) * 0x45d9f3b;
-        x = ((x >> 16) ^ x) * 0x45d9f3b;
-        x = (x >> 16) ^ x;
-
-        return x % size;
-    }
-};
-
-
-
 
 int main(){
     
     /*
     Loading movies rating
     */
-    HashMovies hashRatings(5471); // ~27k movies
+    Hash<Movie> hashRatings(5471); // ~27k movies
     
     fstream rating;
     rating.open("minirating.csv", ios::in);
@@ -122,8 +107,7 @@ int main(){
     getline(rating, temp);
     
     while(getline(rating, temp)){
-        //cout << temp << endl;
-
+    
         stringstream s(temp);
         string word;
         
