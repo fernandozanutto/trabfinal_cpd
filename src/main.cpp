@@ -5,13 +5,14 @@
 #include "header/Hash.h"
 #include "header/User.h"
 #include "header/Movie.h"
-#include <boost/algorithm/string.hpp>
+
 using namespace std;
 
 
 int main(){
      /*Loading movies
     */
+    /*
    Trie films
    fstream movie_trie;
    movie_trie.open("movie.csv", ios :: in);
@@ -35,6 +36,7 @@ int main(){
         films.insert(films,name,movie_id,genre);
 
    }
+   */
     /*
     Loading movies rating
     */
@@ -64,7 +66,7 @@ int main(){
         
         hashUsers[userId].ratings.push_back({movieId, r});
         
-        //cout << hashRatings[movieId].toString() << endl;   
+        cout << hashRatings[movieId].toString();
     }
 
     return 0;

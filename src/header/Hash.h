@@ -1,25 +1,25 @@
 #include <vector>
 
+using namespace std;
+
 template <class K>
 class Hash {
-
 private:
     int size;
-    std::vector<std::vector<K>> table;
+    vector<vector<K>> table;
     
 public:   
     
-    Hash(int s){}
+    Hash(int s);
     
-    int hashFunction(int x) {
-    }
+    int hashFunction(int x);
 
-    void insert(K s){
-    }
+    void insert(K s);
     
-    int search(int s){
-    }
+    int search(int s);
     
-    K &operator[](int index){
-    }
+    K &operator[](int index);
 };
+
+
+#include "../Hash.cpp"
