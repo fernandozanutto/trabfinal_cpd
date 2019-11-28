@@ -7,7 +7,7 @@ const int ALPHABET_SIZE = 26;
 
 class Trie {
 public:
-    Trie *children[ALPHABET_SIZE];
+    Trie *children[ALPHABET_SIZE+1];// acho q tem q botar +1 por causa dos espacos q possivelmente tem no nome
     Movie film;
     /* string name;
     int movie_id; // movie id vai servir pra dizer se é uma palavra ou nao
