@@ -6,11 +6,11 @@ using namespace std;
 class User  {
 public:
     int id;
-    
+
     User(int _id){
-        id = _id;        
+        id = _id;
     }
-    
+
     vector<pair<int,int>> ratings; // pair <movieId, rating>
 };
 
@@ -21,26 +21,26 @@ public:
     int id;
     int num_ratings;
     double sum_ratings;
-    
+
     Movie(int _id){
         id = _id;
         num_ratings = 0;
         sum_ratings = 0;
     }
-    
+
     Movie(int _id, int _n, double _r){
         id = _id;
         num_ratings = _n;
         sum_ratings = _r;
     }
-    
+
     const string toString() const {
         ostringstream buffer;
-        
+
         buffer << "ID: " << id << " Num ratings: " << num_ratings << " Soma: " << sum_ratings << endl;
         return buffer.str();
     }
-    
+
 };
 
 template <class K>
@@ -50,13 +50,13 @@ private:
 
     int size;
     vector<vector<K>> table;
-    
-public:   
+
+public:
     Hash(int s){
         size = s;
         table.assign(s, vector<K>());
     }
-    
+
     int hashFunction(int x) {
         x = ((x >> 16) ^ x) * 0x45d9f3b;
         x = ((x >> 16) ^ x) * 0x45d9f3b;
@@ -69,17 +69,17 @@ public:
         int pos = hashFunction(s.getIdentifier());
         table[pos].push_back(s);
     }
-    
+
     int search(int s){
         int pos = hashFunction(s);
-        
+
         for(int i=0; i < table[pos].size(); i++){
             if(s == table[pos][i])
                 return table[pos][i];
         }
         return -1;
     }
-    
+
     K &operator[](int index){
         int pos = hashFunction(index);
 
@@ -156,37 +156,50 @@ public:
     }
 };
 int main(){
-    
+
+    /*Loading movies
+    */
+   Trie Films
+   fstream movie_trie;
+   movie_trie.open("movie.csv", ios :: in);
+   string temp;
+   while(!movie_trie.eof())
+   {
+       getline(movie_trie,temp);
+
+   }
+
+
     /*
     Loading movies rating
     */
     Hash<Movie> hashRatings(5471); // ~27k movies
     Hash<User> hashUsers(1000);
-    
+
     fstream rating;
     rating.open("minirating.csv", ios::in);
     string temp;
     getline(rating, temp);
-    
+
     while(getline(rating, temp)){
-    
+
         stringstream s(temp);
         string word;
-        
+
         getline(s, word, ',');
-        
+
         int userId = stoi(word);
         getline(s, word, ',');
         int movieId = stoi(word);
         getline(s, word, ',');
         double r = stod(word);
-        
+
         hashRatings[movieId].num_ratings += 1;
         hashRatings[movieId].sum_ratings += r;
-        
+
         hashUsers[userId].ratings.push_back({movieId, r});
-        
-        //cout << hashRatings[movieId].toString() << endl;   
+
+        //cout << hashRatings[movieId].toString() << endl;
     }
 
     return 0;
