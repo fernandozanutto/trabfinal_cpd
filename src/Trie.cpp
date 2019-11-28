@@ -39,7 +39,7 @@ public:
         pCrawl->film.id = id;
         strcpy(gen, pCrawl->film.genre);
     }
-    bool search(struct TrieNode *root, string key)
+    Trie search(Trie *root, string key)
     {
         Trie *pCrawl = root;
 
@@ -51,7 +51,6 @@ public:
 
             pCrawl = pCrawl->children[index];
         }
-
-        return (pCrawl != NULL && pCrawl->movie_id);
+        return (pCrawl);
     }
 };
