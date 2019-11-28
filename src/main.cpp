@@ -69,6 +69,31 @@ int main(){
         cout << hashRatings[movieId].toString();
     }
 
+    /*
+    Searching
+    */
+    string option;
+    string name;
+    cin >> option >> name;
+    
+    //n sei se vai funcionar com essa simples transformacao
+    switch (stoi(option))
+    {
+    case stoi(movie):
+        Trie aux;
+        aux=films.search(films,name); //isso vai retornar o nodo da ultima letra pesquisada
+        while(aux->children!=NULL)
+        {
+            /*
+            percorrer todos os nodos filhos do nodo aux
+            pegando as info
+            */
+        }
+        break;
+    
+    default:
+        break;
+    }
     return 0;
 
 }
