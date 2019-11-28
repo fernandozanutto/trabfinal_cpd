@@ -21,8 +21,6 @@ void Trie<K>::insert(string key, K data){
         }
         pCrawl = pCrawl[index]->children;
     }
-
-    pCrawl->data = data;
 }
 
 K Trie<K>::search(string key){
@@ -30,11 +28,10 @@ K Trie<K>::search(string key){
 
     for (int i = 0; i < key.length(); i++){
         int index = key[i];
-        if (!pCrawl[index])
+        if (!pCrawl[index]){
             return false;
-
-        pCrawl = pCrawl[index]->children;
+        }
+        pCrawl = pCrawl->children[index];
     }
-    
-    return (pCrawl != NULL && pCrawl->isEndOfWord);
+    return (pCrawl);
 }
