@@ -5,7 +5,7 @@
 #include "header/Hash.h"
 #include "header/User.h"
 #include "header/Movie.h"
-
+#include <boost/algorithm/string.hpp>
 using namespace std;
 
 
