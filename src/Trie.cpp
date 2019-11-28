@@ -1,6 +1,6 @@
-template<class K>
-TrieNode<K>::TrieNode(){
-    data = NULL;
+#include "header/Trie.h"
+
+TrieNode::TrieNode(){
     isEndOfWord = false;
     
     for(int i=0; i < ALPHABET_SIZE; i++){
@@ -8,44 +8,43 @@ TrieNode<K>::TrieNode(){
     }
 }
 
-template<class K>
-Trie<K>::Trie() {
+
+Trie::Trie() {
     rootNode = getNode();
 }
 
-template<class K>
-TrieNode<K>* Trie<K>::getNode(){
-    TrieNode<K>* n = new TrieNode<K>();
-    return n;  
+
+TrieNode* Trie::getNode(){
+    TrieNode* n = new TrieNode();
+    return n; 
 }
 
-template<class K>
-void Trie<K>::insert(string key, K data){
-    auto pCrawl = rootNode->children;
+
+void Trie::insert(string key){
+    auto pCrawl = rootNode;
 
     for (int i = 0; i < key.length(); i++){
+
         int index = key[i]; // ASCII do char
-        if (pCrawl[index] == NULL){
-            pCrawl[index] = getNode();
+        if (pCrawl->children[index] == NULL){
+            pCrawl->children[index] = getNode();
         }
-        pCrawl = pCrawl[index]->children;
+        pCrawl = pCrawl->children[index];
     }
-    //pCrawl->data = NULL;
+    
+    pCrawl->isEndOfWord = true;
 }
 
-template<class K>
-void Trie<K>::search(string key){
-    auto pCrawl = rootNode->children;
+
+bool Trie::search(string key){
+    auto pCrawl = rootNode;
 
     for (int i = 0; i < key.length(); i++){
         int index = key[i];
-        if (pCrawl[index] == NULL){
-            cout << "nao achou" << endl;
-            return;
+        if (pCrawl->children[index] == NULL){
+            return false;
         }
-        cout << key[i];
-        pCrawl = pCrawl[index]->children;
+        pCrawl = pCrawl->children[index];
     }
-    //cout << (pCrawl->isEndOfWord) << endl;
-    //return (pCrawl->data);
+    return pCrawl->isEndOfWord;
 }

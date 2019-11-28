@@ -1,27 +1,24 @@
-#include <bits/stdc++.h>
+#include <string>
 
 using namespace std;
+
 const int ALPHABET_SIZE = 256;
 
-template <class K>
 class TrieNode {
 public:
-    TrieNode<K> *children[ALPHABET_SIZE];
+    TrieNode *children[ALPHABET_SIZE];
     bool isEndOfWord;
-    K *data;
     
     TrieNode();
 }; 
 
-template <class K>
+
 class Trie {
 public:
-    TrieNode<K> *rootNode;
+    TrieNode *rootNode;
     
     Trie();
-    TrieNode<K> *getNode();    
-    void insert(string key, K data);
-    void search(string key);
+    TrieNode *getNode();    
+    void insert(string key);
+    bool search(string key);
 };
-
-#include "../Trie.cpp"

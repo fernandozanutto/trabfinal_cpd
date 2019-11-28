@@ -11,7 +11,7 @@ using namespace std;
 
 
 int main(){
-   Trie<Movie> films;
+   
    
    /*fstream movie_trie;
    movie_trie.open("movie.csv", ios :: in);
@@ -34,19 +34,18 @@ int main(){
         films.insert(films,name,movie_id,genre);
 
    }*/
-   Movie t(123, 5, 40);
-
-   films.insert("ToyStory", t);
-   
-   auto a = films.rootNode;
-   
+   Trie films;
    
 
+   films.insert("ToyStory");
+   cout << "inseriu" << endl;
+
    
-   films.search("ToyStory");
+   bool a = films.search("ToyStory");
+   cout << "buscou um que existe " << a << endl;
    cout << endl;
-   films.search("ToyStoryaaa");
-   cout << endl;
+   bool b = films.search("ToyStoryaaa");
+   cout << "buscou um que nao existe " << b << endl;
    cout << endl;
 
    return 0;
