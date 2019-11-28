@@ -16,7 +16,7 @@ public:
 
 class Movie {
 public:
-    string name; // fiz essas modificaÃ§Ãµes para poder usar com a trie ja dai
+    string name; // fiz essas modificações para poder usar com a trie ja dai
     string genres;
     int id;
     int num_ratings;
@@ -106,10 +106,10 @@ const int ALPHABET_SIZE = 26;
 class Trie
 {
 public:
-    Trie *children[ALPHABET_SIZE];
+    Trie *children[ALPHABET_SIZE];// acho q tem q botar +1 por causa dos espaços q possivelmente tem no nome
     Movie film;
     /* string name;
-    int movie_id; // movie id vai servir pra dizer se Ã© uma palavra ou nao
+    int movie_id; // movie id vai servir pra dizer se é uma palavra ou nao
     string genre;   //string com todos os generos q o filme tem separados por virgula
     */
     Trie *getNode(void)
@@ -159,17 +159,26 @@ int main(){
 
     /*Loading movies
     */
-   Trie Films
+   Trie films
    fstream movie_trie;
    movie_trie.open("movie.csv", ios :: in);
    string temp;
-   while(!movie_trie.eof())
-   {
-       getline(movie_trie,temp);
+   getline(movie_trie,temp);
+   while(getline(movie_trie, temp)){
+
+        stringstream s(temp);
+        string word;
+        getline(s, word, ',');
+        int movie_id = stoi(word);
+        getline(s, word, ',');
+        string name;
+        strcpy(word,name);
+        getline(s, word, ',');
+        string genre;
+        strcpy(word,genre);
+        films.insert(films,name,movie_id,genre);
 
    }
-
-
     /*
     Loading movies rating
     */
