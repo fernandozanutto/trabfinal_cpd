@@ -5,6 +5,7 @@
 #include "header/Hash.h"
 #include "header/User.h"
 #include "header/Movie.h"
+#include "header/Trie.h"
 
 using namespace std;
 

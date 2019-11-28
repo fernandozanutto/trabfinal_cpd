@@ -1,4 +1,5 @@
-struct TrieNone* Trie<K>::getNode(){
+template<class K>
+struct TrieNode* Trie<K>::getNode(){
     struct TrieNone *pNode = new TrieNode;
 
     pNode->data = NULL;
@@ -11,6 +12,7 @@ struct TrieNone* Trie<K>::getNode(){
     return pNode;
 }
 
+template<class K>
 void Trie<K>::insert(string key, K data){
     TrieNone *pCrawl = this.children;
 
@@ -23,6 +25,7 @@ void Trie<K>::insert(string key, K data){
     }
 }
 
+template<class K>
 K Trie<K>::search(string key){
     TrieNode *pCrawl = this.children;
 
