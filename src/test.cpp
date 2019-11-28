@@ -38,12 +38,15 @@ int main(){
 
    films.insert("ToyStory", t);
    
-   auto a = films.children;
+   auto a = films.rootNode;
    
    
 
    
    films.search("ToyStory");
+   cout << endl;
+   films.search("ToyStoryaaa");
+   cout << endl;
    cout << endl;
 
    return 0;

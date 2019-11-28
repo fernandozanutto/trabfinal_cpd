@@ -1,27 +1,27 @@
 template<class K>
-Trie<K>::Trie() {
+TrieNode<K>::TrieNode(){
+    data = NULL;
+    isEndOfWord = false;
+    
     for(int i=0; i < ALPHABET_SIZE; i++){
         children[i] = NULL;
     }
 }
 
 template<class K>
-struct TrieNode<K>* Trie<K>::getNode(){
-    struct TrieNode<K> *pNode = new TrieNode<K>;
+Trie<K>::Trie() {
+    rootNode = getNode();
+}
 
-    pNode->data = NULL;
-    pNode->isEndOfWord = false;
-
-    for (int i = 0; i < ALPHABET_SIZE; i++){
-        pNode->children[i] = NULL;
-    }
-    
-    return pNode;
+template<class K>
+TrieNode<K>* Trie<K>::getNode(){
+    TrieNode<K>* n = new TrieNode<K>();
+    return n;  
 }
 
 template<class K>
 void Trie<K>::insert(string key, K data){
-    auto pCrawl = children;
+    auto pCrawl = rootNode->children;
 
     for (int i = 0; i < key.length(); i++){
         int index = key[i]; // ASCII do char
@@ -30,11 +30,12 @@ void Trie<K>::insert(string key, K data){
         }
         pCrawl = pCrawl[index]->children;
     }
+    //pCrawl->data = NULL;
 }
 
 template<class K>
 void Trie<K>::search(string key){
-    auto pCrawl = children;
+    auto pCrawl = rootNode->children;
 
     for (int i = 0; i < key.length(); i++){
         int index = key[i];
@@ -45,5 +46,6 @@ void Trie<K>::search(string key){
         cout << key[i];
         pCrawl = pCrawl[index]->children;
     }
+    //cout << (pCrawl->isEndOfWord) << endl;
     //return (pCrawl->data);
 }
