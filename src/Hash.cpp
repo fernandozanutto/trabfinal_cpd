@@ -1,5 +1,4 @@
 template <class K>
-
 Hash<K>::Hash(int s){
     size = s;
     table.assign(s, vector<K>());
