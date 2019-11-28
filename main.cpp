@@ -1,5 +1,5 @@
 #include <bits/stdc++.h>
-
+#include <boost/algorithm/string.hpp>
 using namespace std;
 
 
@@ -106,7 +106,7 @@ const int ALPHABET_SIZE = 26;
 class Trie
 {
 public:
-    Trie *children[ALPHABET_SIZE];// acho q tem q botar +1 por causa dos espaços q possivelmente tem no nome
+    Trie *children[ALPHABET_SIZE+1];// acho q tem q botar +1 por causa dos espaços q possivelmente tem no nome
     Movie film;
     /* string name;
     int movie_id; // movie id vai servir pra dizer se é uma palavra ou nao
@@ -170,10 +170,13 @@ int main(){
         string word;
         getline(s, word, ',');
         int movie_id = stoi(word);
-        getline(s, word, ',');
+        getline(s, word, '"'); //ignora o primeiro pra poder pegar o nome do filme limpo
+        getline(s, word, '"');
         string name;
         strcpy(word,name);
-        getline(s, word, ',');
+        boost::algorithm::to_lower(name); // deixa tudo em minuscula mas n sei se vai ficar lento
+        getline(s, word, '"'); // mesma coisa de antes
+        getline(s, word, '"');
         string genre;
         strcpy(word,genre);
         films.insert(films,name,movie_id,genre);
