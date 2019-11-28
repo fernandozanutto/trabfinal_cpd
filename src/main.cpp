@@ -10,7 +10,31 @@ using namespace std;
 
 
 int main(){
-    
+     /*Loading movies
+    */
+   Trie films
+   fstream movie_trie;
+   movie_trie.open("movie.csv", ios :: in);
+   string temp;
+   getline(movie_trie,temp);
+   while(getline(movie_trie, temp)){
+
+        stringstream s(temp);
+        string word;
+        getline(s, word, ',');
+        int movie_id = stoi(word);
+        getline(s, word, '"'); //ignora o primeiro pra poder pegar o nome do filme limpo
+        getline(s, word, '"');
+        string name;
+        strcpy(word,name);
+        boost::algorithm::to_lower(name); // deixa tudo em minuscula mas n sei se vai ficar lento
+        getline(s, word, '"'); // mesma coisa de antes
+        getline(s, word, '"');
+        string genre;
+        strcpy(word,genre);
+        films.insert(films,name,movie_id,genre);
+
+   }
     /*
     Loading movies rating
     */
