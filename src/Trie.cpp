@@ -20,7 +20,7 @@ TrieNode* Trie::getNode(){
 }
 
 
-void Trie::insert(string key){
+void Trie::insert(string key, int id){
     auto pCrawl = rootNode;
 
     for (int i = 0; i < key.length(); i++){
@@ -33,18 +33,23 @@ void Trie::insert(string key){
     }
     
     pCrawl->isEndOfWord = true;
+    pCrawl->movieId = id;
 }
 
 
-bool Trie::search(string key){
+int Trie::search(string key){
     auto pCrawl = rootNode;
 
     for (int i = 0; i < key.length(); i++){
         int index = tolower(key[i]);
         if (pCrawl->children[index] == NULL){
-            return false;
+            return -1;
         }
         pCrawl = pCrawl->children[index];
     }
-    return pCrawl->isEndOfWord;
+    if(pCrawl->isEndOfWord)
+        return pCrawl->movieId;
+    else
+        return -1;
 }
+

@@ -12,39 +12,34 @@ using namespace std;
 
 int main(){
    
-   
-   /*fstream movie_trie;
-   movie_trie.open("movie.csv", ios :: in);
-   string temp;
+   Trie films;
+   fstream movie_trie;
+   movie_trie.open("movie.csv", ios::in);
+   string temp, name, genre;
+   int movie_id;
    getline(movie_trie,temp);
    while(getline(movie_trie, temp)){
+
         stringstream s(temp);
         string word;
         getline(s, word, ',');
         int movie_id = stoi(word);
         getline(s, word, '"'); //ignora o primeiro pra poder pegar o nome do filme limpo
         getline(s, word, '"');
-        string name;
-        strcpy(word,name);
-        boost::algorithm::to_lower(name); // deixa tudo em minuscula mas n sei se vai ficar lento
+        name = word;
         getline(s, word, '"'); // mesma coisa de antes
         getline(s, word, '"');
-        string genre;
-        strcpy(word,genre);
-        films.insert(films,name,movie_id,genre);
 
-   }*/
-   Trie films;
+        genre = word;
+
+        films.insert(name, movie_id);
+   }
    
-
-   films.insert("ToyStory");
-   cout << "inseriu" << endl;
-
    
-   bool a = films.search("ToyStory");
+   int a = films.search("Heat (1995)");
    cout << "buscou um que existe " << a << endl;
    cout << endl;
-   bool b = films.search("ToyStoryaaa");
+   int b = films.search("Toy Storyaaa");
    cout << "buscou um que nao existe " << b << endl;
    cout << endl;
 
