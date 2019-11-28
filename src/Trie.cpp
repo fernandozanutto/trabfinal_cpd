@@ -25,7 +25,7 @@ void Trie::insert(string key){
 
     for (int i = 0; i < key.length(); i++){
 
-        int index = key[i]; // ASCII do char
+        int index = tolower(key[i]); // ASCII do char
         if (pCrawl->children[index] == NULL){
             pCrawl->children[index] = getNode();
         }
@@ -40,7 +40,7 @@ bool Trie::search(string key){
     auto pCrawl = rootNode;
 
     for (int i = 0; i < key.length(); i++){
-        int index = key[i];
+        int index = tolower(key[i]);
         if (pCrawl->children[index] == NULL){
             return false;
         }
