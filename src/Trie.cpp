@@ -1,8 +1,7 @@
 #include "header/Trie.h"
 
 TrieNode::TrieNode(){
-    isEndOfWord = false;
-    
+    movieId = -1;
     for(int i=0; i < ALPHABET_SIZE; i++){
         children[i] = NULL;
     }
@@ -25,13 +24,12 @@ void Trie::insert(string key, int id){
     for (int i = 0; i < key.length(); i++){
 
         int index = tolower(key[i]); // ASCII do char
+        
         if (pCrawl->children[index] == NULL){
             pCrawl->children[index] = newNode();
         }
         pCrawl = pCrawl->children[index];
     }
-    
-    pCrawl->isEndOfWord = true;
     pCrawl->movieId = id;
 }
 
@@ -46,17 +44,29 @@ int Trie::search(string key){
         }
         pCrawl = pCrawl->children[index];
     }
-    if(pCrawl->isEndOfWord)
-        return pCrawl->movieId;
-    else
-        return -1;
+    return pCrawl->movieId;
 }
 
 
-vector<int> Trie::searchPrefix(string key){
+void dfs(vector<pair<string,int>> &ans, TrieNode* node, string key){
+
+    if(node->movieId != -1){
+        ans.push_back({key, node->movieId});
+    }
+    
+    for(int i=0; i < ALPHABET_SIZE; i++){
+    
+        if(node->children[i] != NULL){
+            dfs(ans, node->children[i], key+(char)i);
+        }
+    }
+    
+}
+
+vector<pair<string,int>> Trie::searchPrefix(string key){
     auto pCrawl = rootNode;
     
-    vector<int> ans;
+    vector<pair<string,int>> ans;
     
     for (int i = 0; i < key.length(); i++){
 
@@ -67,11 +77,9 @@ vector<int> Trie::searchPrefix(string key){
         pCrawl = pCrawl->children[index];
     }
     
-    stack<int> stack;
+    dfs(ans, pCrawl, key);
     
-    
-    
-
+    return ans;
 }
 
 
