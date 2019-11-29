@@ -1,8 +1,9 @@
 #include <string>
 #include <cctype>
+#include <vector>
 using namespace std;
 
-const int ALPHABET_SIZE = 256;
+const int ALPHABET_SIZE = 128;
 
 class TrieNode {
 public:
@@ -14,11 +15,12 @@ public:
 
 
 class Trie {
-public:
+private:
     TrieNode *rootNode;
-    
+    TrieNode *newNode();    
+public:    
     Trie();
-    TrieNode *getNode();    
     void insert(string key, int id);
     int search(string key);
+    vector<int> searchPrefix(string key);
 };

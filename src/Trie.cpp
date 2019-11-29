@@ -10,15 +10,14 @@ TrieNode::TrieNode(){
 
 
 Trie::Trie() {
-    rootNode = getNode();
+    rootNode = newNode();
 }
 
 
-TrieNode* Trie::getNode(){
+TrieNode* Trie::newNode(){
     TrieNode* n = new TrieNode();
     return n; 
 }
-
 
 void Trie::insert(string key, int id){
     auto pCrawl = rootNode;
@@ -27,7 +26,7 @@ void Trie::insert(string key, int id){
 
         int index = tolower(key[i]); // ASCII do char
         if (pCrawl->children[index] == NULL){
-            pCrawl->children[index] = getNode();
+            pCrawl->children[index] = newNode();
         }
         pCrawl = pCrawl->children[index];
     }
@@ -52,4 +51,28 @@ int Trie::search(string key){
     else
         return -1;
 }
+
+
+vector<int> Trie::searchPrefix(string key){
+    auto pCrawl = rootNode;
+    
+    vector<int> ans;
+    
+    for (int i = 0; i < key.length(); i++){
+
+        int index = tolower(key[i]); // ASCII do char
+        if (pCrawl->children[index] == NULL){
+            return ans;
+        }
+        pCrawl = pCrawl->children[index];
+    }
+    
+    stack<int> stack;
+    
+    
+    
+
+}
+
+
 
