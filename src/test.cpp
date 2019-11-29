@@ -18,6 +18,7 @@ int main(){
    string temp, name, genre;
    int movie_id;
    getline(movie_trie,temp);
+
    while(getline(movie_trie, temp)){
 
         stringstream s(temp);
@@ -34,7 +35,7 @@ int main(){
 
         films.insert(name, movie_id);
    }
-   
+
    
    int a = films.search("Heat (1995)");
    cout << "buscou um que existe " << a << endl;
@@ -42,6 +43,18 @@ int main(){
    int b = films.search("Toy Storyaaa");
    cout << "buscou um que nao existe " << b << endl;
    cout << endl;
+   
+   
+   auto c = films.searchPrefix("star");
+   
+   cout << c.size() << endl;
+   
+   for(auto d: c){
+   
+   cout << d.first << endl;
+   
+   }
+   
 
    return 0;
 

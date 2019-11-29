@@ -3,7 +3,7 @@
 #include <vector>
 using namespace std;
 
-const int ALPHABET_SIZE = 128;
+const int ALPHABET_SIZE = 256;
 
 class TrieNode {
 public:
@@ -22,5 +22,6 @@ public:
     Trie();
     void insert(string key, int id);
     int search(string key);
-    vector<int> searchPrefix(string key);
+    vector<pair<string,int>> searchPrefix(string key);
 };
+
