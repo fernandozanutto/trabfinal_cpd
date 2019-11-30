@@ -81,7 +81,7 @@ int main(){
     switch (stoi(option)) {
     case stoi(movie):
         Trie aux;
-        aux=films.search(films,name); //isso vai retornar o nodo da ultima letra pesquisada
+        aux=films.searchPrefix(films,name); //isso vai retornar o nodo da ultima letra pesquisada
         while(aux->children!=NULL)
         {
 
