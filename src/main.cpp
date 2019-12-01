@@ -78,6 +78,9 @@ int main(){
         hashUsers[userId]->addMovie(m, r);
     }
     
+    // TODO: carregar csv de tags
+    // TODO: fazer modo linha de comando dps de carregar tudo
+    // TODO: salvar generos de filmes como um vector de strings
     
     //cout << hashUsers[48644]->toString() << endl;
     
