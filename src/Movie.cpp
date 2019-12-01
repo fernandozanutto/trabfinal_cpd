@@ -19,6 +19,8 @@ Movie::Movie(int _id, string _name, string _genre){
     id = _id;
     name = _name;
     genres = _genre;
+    num_ratings = 0;
+    sum_ratings = 0;
 }
 
 const string Movie::toString() const {

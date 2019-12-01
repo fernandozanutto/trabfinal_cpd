@@ -11,7 +11,7 @@ using namespace std;
 
 
 int main(){
-   
+    Hash<Movie> hashRatings(5471); // ~27k movies   
     Trie films;
     fstream movie_trie;
     movie_trie.open("movie.csv", ios::in);
@@ -36,17 +36,23 @@ int main(){
         genre = word;
         
         Movie* a = new Movie(movie_id, name, genre);
-        
+        hashRatings[movie_id] = a;
         films.insert(name, a);
-    }   
-   
+    }
+    
+    cout << hashRatings[1]->toString() << endl;
+
     auto c = films.searchPrefix("Toy");
    
     cout << c.size() << endl;
    
     for(auto d: c){
         cout << d.second->toString() << endl;
+        d.second->sum_ratings = 500;
     }
+    
+    cout << hashRatings[1]->toString() << endl;
+ 
     
     cout << "fim" << endl;
 

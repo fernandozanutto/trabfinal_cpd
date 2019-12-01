@@ -29,7 +29,7 @@ int main(){
     getline(movie_trie,temp);
     
     while(getline(movie_trie, temp)){
-
+        
         stringstream s(temp);
         string word;
         getline(s, word, ',');
@@ -44,14 +44,12 @@ int main(){
         genre = word;
         
         Movie* a = new Movie(movie_id, name, genre);
-        //hashRatings[movieId] = a;
+        hashRatings[movie_id] = a;
         films.insert(name, a);
     }
     
-    /*
     fstream rating;
     rating.open("minirating.csv", ios::in);
-    string temp,b,name,genre;
     getline(rating, temp);
     
     while(getline(rating, temp)){
@@ -60,7 +58,6 @@ int main(){
         string word;
         
         getline(s, word, ',');
-        //cout << word << endl;
         
         int userId = stoi(word);
         getline(s, word, ',');
@@ -71,11 +68,10 @@ int main(){
         hashRatings[movieId]->num_ratings += 1;
         hashRatings[movieId]->sum_ratings += r;
         
-        //cout << hashRatings[movieId].toString() << endl;
-        
+        //cout << hashRatings[movieId]->toString() << endl;
     }
     
-    */
+   
     auto c = films.searchPrefix("Toy");
    
     cout << c.size() << endl;

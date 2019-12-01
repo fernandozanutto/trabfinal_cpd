@@ -1,7 +1,7 @@
 template <class K>
 Hash<K>::Hash(int s){
     size = s;
-    table.assign(s, vector<K>());
+    table.assign(s, vector<K*>());
 }
 
 
@@ -16,8 +16,8 @@ int Hash<K>::hashFunction(int x) {
 
 
 template <class K>
-void Hash<K>::insert(K s){
-    int pos = hashFunction(s.getIdentifier());
+void Hash<K>::insert(K* s){
+    int pos = hashFunction(s.id);
     table[pos].push_back(s);
 }
 
@@ -33,23 +33,23 @@ int Hash<K>::search(int s){
 }
 
 template <class K>
-K& Hash<K>::operator[](int index){
+K* &Hash<K>::operator[](int index){
     int pos = hashFunction(index);
 
     if (table[pos].size() == 0){
 
         K novo(index);
-        table[pos].push_back(novo);
+        table[pos].push_back(NULL);
         return table[pos][0];
     } else {
         int i;
         for(i=0; i < table[pos].size(); i++){
-            if(table[pos][i].id == index){
+            if(table[pos][i]->id == index){
                 return table[pos][i];
             }
         }
 
-        table[pos].push_back(K(index));
+        table[pos].push_back(NULL);
         return table[pos][i];
     }
 }

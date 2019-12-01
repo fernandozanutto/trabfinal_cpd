@@ -6,7 +6,7 @@ template <class K>
 class Hash {
 private:
     int size;
-    vector<vector<K>> table;
+    vector<vector<K*>> table;
     
 public:   
     
@@ -14,11 +14,11 @@ public:
     
     int hashFunction(int x);
 
-    void insert(K s);
+    void insert(K* s);
     
     int search(int s);
     
-    K &operator[](int index);
+    K* &operator[](int index);
 };
 
 
