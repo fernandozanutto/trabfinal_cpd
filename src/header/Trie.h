@@ -1,6 +1,8 @@
 #include <string>
 #include <cctype>
+#include <iostream>
 #include <vector>
+#include "Movie.h"
 using namespace std;
 
 const int ALPHABET_SIZE = 256;
@@ -9,7 +11,7 @@ class TrieNode {
 public:
     TrieNode *children[ALPHABET_SIZE];
     bool isEndOfWord;
-    int movieId;
+    Movie *movie;
     TrieNode();
 }; 
 
@@ -20,8 +22,8 @@ private:
     TrieNode *newNode();    
 public:    
     Trie();
-    void insert(string key, int id);
-    int search(string key);
-    vector<pair<string,int>> searchPrefix(string key);
+    void insert(string key, Movie *movie);
+    Movie* search(string key);
+    vector<pair<string, Movie*>> searchPrefix(string key);
 };
 

@@ -1,7 +1,7 @@
 #include "header/Trie.h"
 
 TrieNode::TrieNode(){
-    movieId = -1;
+    movie = NULL;
     for(int i=0; i < ALPHABET_SIZE; i++){
         children[i] = NULL;
     }
@@ -18,7 +18,7 @@ TrieNode* Trie::newNode(){
     return n; 
 }
 
-void Trie::insert(string key, int id){
+void Trie::insert(string key, Movie* movie){
     auto pCrawl = rootNode;
 
     for (int i = 0; i < key.length(); i++){
@@ -30,28 +30,28 @@ void Trie::insert(string key, int id){
         }
         pCrawl = pCrawl->children[index];
     }
-    pCrawl->movieId = id;
+    pCrawl->movie = movie;
 }
 
 
-int Trie::search(string key){
+Movie* Trie::search(string key){
     auto pCrawl = rootNode;
 
     for (int i = 0; i < key.length(); i++){
         int index = tolower(key[i]);
         if (pCrawl->children[index] == NULL){
-            return -1;
+            return NULL;
         }
         pCrawl = pCrawl->children[index];
     }
-    return pCrawl->movieId;
+    return pCrawl->movie;
 }
 
 
-void dfs(vector<pair<string,int>> &ans, TrieNode* node, string key){
+void dfs(vector<pair<string, Movie*>> &ans, TrieNode* node, string key){
 
-    if(node->movieId != -1){
-        ans.push_back({key, node->movieId});
+    if(node->movie != NULL){
+        ans.push_back({key, node->movie});
     }
     
     for(int i=0; i < ALPHABET_SIZE; i++){
@@ -60,13 +60,12 @@ void dfs(vector<pair<string,int>> &ans, TrieNode* node, string key){
             dfs(ans, node->children[i], key+(char)i);
         }
     }
-    
 }
 
-vector<pair<string,int>> Trie::searchPrefix(string key){
+vector<pair<string, Movie*>> Trie::searchPrefix(string key){
     auto pCrawl = rootNode;
     
-    vector<pair<string,int>> ans;
+    vector<pair<string, Movie*>> ans;
     
     for (int i = 0; i < key.length(); i++){
 

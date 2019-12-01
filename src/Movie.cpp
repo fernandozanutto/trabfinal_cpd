@@ -1,5 +1,8 @@
 #include "header/Movie.h"
 
+Movie::Movie(){
+}
+
 Movie::Movie(int _id){
     id = _id;
     num_ratings = 0;
@@ -12,9 +15,16 @@ Movie::Movie(int _id, int _n, double _r){
     sum_ratings = _r;
 }
 
+Movie::Movie(int _id, string _name, string _genre){
+    id = _id;
+    name = _name;
+    genres = _genre;
+}
+
 const string Movie::toString() const {
     ostringstream buffer;
     
-    buffer << "ID: " << id << " Num ratings: " << num_ratings << " Soma: " << sum_ratings << endl;
+    buffer << "ID: " << id << " Nome: " << name << " Generos: " << genres <<  " Num ratings: " << num_ratings << " Soma: " << sum_ratings << endl;
+    
     return buffer.str();
 }
