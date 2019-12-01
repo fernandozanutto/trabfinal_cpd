@@ -22,14 +22,14 @@ void Hash<K>::insert(K* s){
 }
 
 template <class K>
-int Hash<K>::search(int s){
+bool Hash<K>::search(int s){
     int pos = hashFunction(s);
     
     for(int i=0; i < table[pos].size(); i++){
-        if(s == table[pos][i])
-            return table[pos][i];
+        if(s == table[pos][i]->id)
+            return true;
     }
-    return -1;
+    return false;
 }
 
 template <class K>
@@ -37,14 +37,13 @@ K* &Hash<K>::operator[](int index){
     int pos = hashFunction(index);
 
     if (table[pos].size() == 0){
-
-        K novo(index);
         table[pos].push_back(NULL);
         return table[pos][0];
     } else {
         int i;
         for(i=0; i < table[pos].size(); i++){
             if(table[pos][i]->id == index){
+                
                 return table[pos][i];
             }
         }

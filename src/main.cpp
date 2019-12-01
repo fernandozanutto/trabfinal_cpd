@@ -11,11 +11,13 @@ using namespace std;
 
 
 int main(){
-
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
     /*
     Loading movies rating
     */
     Hash<Movie> hashRatings(5471); // ~27k movies
+    Hash<User> hashUsers(27701); // ~138k users
     Trie films;
     
     /*
@@ -49,7 +51,7 @@ int main(){
     }
     
     fstream rating;
-    rating.open("minirating.csv", ios::in);
+    rating.open("rating.csv", ios::in);
     getline(rating, temp);
     
     while(getline(rating, temp)){
@@ -64,22 +66,21 @@ int main(){
         int movieId = stoi(word);
         getline(s, word, ',');
         double r = stod(word);
+
+        Movie* m = hashRatings[movieId];
+
+        m->num_ratings += 1;
+        m->sum_ratings += r;
         
-        hashRatings[movieId]->num_ratings += 1;
-        hashRatings[movieId]->sum_ratings += r;
-        
-        //cout << hashRatings[movieId]->toString() << endl;
+        if(!hashUsers.search(userId)){
+            hashUsers[userId] = new User(userId);
+        }
+        hashUsers[userId]->addMovie(m, r);
     }
     
-   
-    auto c = films.searchPrefix("Toy");
-   
-    cout << c.size() << endl;
-   
-    for(auto d: c){
-        cout << d.second->toString() << endl;
-    }
- 
+    
+    //cout << hashUsers[48644]->toString() << endl;
+    
     /*
     Searching
     */

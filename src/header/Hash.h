@@ -1,5 +1,5 @@
 #include <vector>
-
+#include <iostream>
 using namespace std;
 
 template <class K>
@@ -16,7 +16,7 @@ public:
 
     void insert(K* s);
     
-    int search(int s);
+    bool search(int s);
     
     K* &operator[](int index);
 };
