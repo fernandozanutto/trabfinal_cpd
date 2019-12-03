@@ -39,7 +39,7 @@ int main(){
         
         getline(s, word, '"'); //ignora o primeiro pra poder pegar o nome do filme limpo
         getline(s, word, '"');
-        name = word;
+        name = clear_string(word);
         
         getline(s, word, '"'); // mesma coisa de antes
         getline(s, word, '"');
