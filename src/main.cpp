@@ -44,16 +44,19 @@ int main()
 
         getline(s, word, '"');// mesma coisa de antes
         getline(s, word, '"');
-        while(getline(s,word, '|'))
+
+        //split genres
+        std::string delimiter = "|";
+
+        size_t pos = 0;
+        std::string token;
+        while ((pos = word.find(delimiter)) != std::string::npos)
         {
-           /*
-           fazer um jeito de separar as string
-           */
+            genre.push_back(word.substr(0, pos));
+            word.erase(0, pos + delimiter.length());
         }
+        std::cout << s << std::endl;
 
-        getline(s, word, '"');
-
-        genre = word;
 
         Movie* a = new Movie(movie_id, name, genre);
         hashRatings[movie_id] = a;
