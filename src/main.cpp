@@ -10,7 +10,8 @@
 using namespace std;
 
 
-int main(){
+int main()
+{
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     /*
@@ -19,48 +20,58 @@ int main(){
     Hash<Movie> hashRatings(5471); // ~27k movies
     Hash<User> hashUsers(27701); // ~138k users
     Trie films;
-    
+
     /*
     Loading movies
     */
     fstream movie_trie;
     movie_trie.open("movie.csv", ios::in);
-    string temp, name, genre;
+    string temp, name;
+    vector<string> genre;
     int movie_id;
-    
+
     getline(movie_trie,temp);
-    
-    while(getline(movie_trie, temp)){
-        
+    while(getline(movie_trie, temp))
+    {
         stringstream s(temp);
         string word;
         getline(s, word, ',');
         int movie_id = stoi(word);
-        
+
         getline(s, word, '"'); //ignora o primeiro pra poder pegar o nome do filme limpo
         getline(s, word, '"');
         name = clear_string(word);
-        
-        getline(s, word, '"'); // mesma coisa de antes
+
+        getline(s, word, '"');// mesma coisa de antes
         getline(s, word, '"');
+        while(getline(s,word, '|'))
+        {
+           /*
+           fazer um jeito de separar as string
+           */
+        }
+
+        getline(s, word, '"');
+
         genre = word;
-        
+
         Movie* a = new Movie(movie_id, name, genre);
         hashRatings[movie_id] = a;
         films.insert(name, a);
     }
-    
+
     fstream rating;
     rating.open("rating.csv", ios::in);
     getline(rating, temp);
-    
-    while(getline(rating, temp)){
+
+    while(getline(rating, temp))
+    {
 
         stringstream s(temp);
         string word;
-        
+
         getline(s, word, ',');
-        
+
         int userId = stoi(word);
         getline(s, word, ',');
         int movieId = stoi(word);
@@ -71,27 +82,30 @@ int main(){
 
         m->num_ratings += 1;
         m->sum_ratings += r;
-        
-        if(!hashUsers.search(userId)){
+
+        if(!hashUsers.search(userId))
+        {
             hashUsers[userId] = new User(userId);
         }
         hashUsers[userId]->addMovie(m, r);
     }
-    
+
+
+
     // TODO: carregar csv de tags
     // TODO: fazer modo linha de comando dps de carregar tudo
     // TODO: salvar generos de filmes como um vector de strings
-    
+
     //cout << hashUsers[48644]->toString() << endl;
-    
+
     /*
     Searching
     */
     /*
     auto c = films.searchPrefix("Toy");
-   
+
     cout << c.size() << endl;
-   
+
     for(auto d: c){
         cout << d.second->toString() << endl;
     }
