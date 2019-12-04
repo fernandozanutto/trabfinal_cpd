@@ -19,7 +19,7 @@ int main()
     */
     Hash<Movie> hashRatings(5471); // ~27k movies
     Hash<User> hashUsers(27701); // ~138k users
-    Trie films;
+    Trie films;                 // ~27k movies
 
     /*
     Loading movies
@@ -55,7 +55,7 @@ int main()
             genre.push_back(word.substr(0, pos));
             word.erase(0, pos + delimiter.length());
         }
-        std::cout << s << std::endl;
+        genre.push_back(word);
 
 
         Movie* a = new Movie(movie_id, name, genre);
@@ -97,7 +97,6 @@ int main()
 
     // TODO: carregar csv de tags
     // TODO: fazer modo linha de comando dps de carregar tudo
-    // TODO: salvar generos de filmes como um vector de strings
 
     //cout << hashUsers[48644]->toString() << endl;
 
