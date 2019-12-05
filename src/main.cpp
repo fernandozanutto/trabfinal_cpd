@@ -22,7 +22,7 @@ int main() {
     Hash<User> hashUsers(27701); // ~138k users
     Trie films;                 // ~27k movies
     ClearString cl;
-
+    
     /*
     Loading movies
     */
@@ -95,12 +95,42 @@ int main() {
         hashUsers[userId]->addMovie(m, r);
     }
 
-
+    
 
     // TODO: carregar csv de tags
     // TODO: fazer modo linha de comando dps de carregar tudo
+    
 
-    //cout << hashUsers[48644]->toString() << endl;
+    cout << 'TA TUDO CARREGADO. LETs DALE'<< endl;
+    cout << 'Entre com a função' << endl;
+    string linha_terminal;
+    string option;      // movie, user or tag
+    cin >> linha_terminal; 
+    getline(linha_terminal,option,' ');
+
+    if(strcmp(option,"movie"))
+    {
+        //pesquisa pelo nomes do filme
+    }
+
+    else if (strcmp(option,"user"))
+    {
+        //listar os filmes avaliados
+    }
+
+    else if (strcmp(option,"top"))
+    {
+        //ranking dos filmes de um genero
+    }
+
+    else if(strcmp(option,"tag"))
+    {
+        //lista os filme com a tag dada
+    }
+
+
+
+
 
     /*
     Searching
