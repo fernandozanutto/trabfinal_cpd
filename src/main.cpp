@@ -22,19 +22,19 @@ int main() {
     Hash<User> hashUsers(27701); // ~138k users
     Trie films;                 // ~27k movies
     ClearString cl;
-    
+
     /*
     Loading movies
     */
     fstream movie_trie;
     movie_trie.open("movie.csv", ios::in);
     string temp, name;
-    
+
     int movie_id;
 
     getline(movie_trie,temp);
     while(getline(movie_trie, temp)){
-    
+
         stringstream s(temp);
         string word;
         getline(s, word, ',');
@@ -95,22 +95,39 @@ int main() {
         hashUsers[userId]->addMovie(m, r);
     }
 
-    
+
 
     // TODO: carregar csv de tags
     // TODO: fazer modo linha de comando dps de carregar tudo
-    
+
 
     cout << 'TA TUDO CARREGADO. LETs DALE'<< endl;
-    cout << 'Entre com a funÃ§Ã£o' << endl;
+    cout << 'Entre com a função' << endl;
     string linha_terminal;
-    string option;      // movie, user or tag
-    cin >> linha_terminal; 
+    string option;      // movie, user, top or tag
+    cin >> linha_terminal;
     getline(linha_terminal,option,' ');
 
     if(strcmp(option,"movie"))
     {
-        //pesquisa pelo nomes do filme
+        getline(linha_terminal,option, ' ');
+        auto key =(searchPrefix(option));
+        cout << "Movie Id" << '\t' << "Title"<< '\t' << "Genres" << '\t' << "Rating" << '\t' << "Counting"<< endl;
+        cout <<"---------------------------------------------------------------------"<< endl;
+        int i=0;
+        while(key[i]!=NULL)
+        {
+            cout<<key[i]->id<<'\t'<< key[i]->name<< '\t';
+            int j=0;
+            while(key[i]->genres!=NULL)
+            {
+                cout<< key[i]->genres[j]<<"|";
+            }
+            auto aux = hashFilmes(key[i]->id);
+            int rate=(aux->sum_ratings/aux->num_ratings);
+            cout << rate << '\t' << aux->num_ratings << endl;
+        }
+
     }
 
     else if (strcmp(option,"user"))
