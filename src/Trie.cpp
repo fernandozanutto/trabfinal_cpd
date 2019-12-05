@@ -38,7 +38,7 @@ Movie* Trie::search(string key){
     auto pCrawl = rootNode;
 
     for (int i = 0; i < key.length(); i++){
-        int index = tolower(key[i]);
+        int index = key[i];
         if (pCrawl->children[index] == NULL){
             return NULL;
         }
