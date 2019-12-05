@@ -8,6 +8,10 @@ void User::addMovie(Movie* movie, double rating){
     ratings.push_back({movie, rating});
 }
 
+int User::getIdentifier(){
+    return id;
+}
+
 const string User::toString() const {
     ostringstream buffer;
     

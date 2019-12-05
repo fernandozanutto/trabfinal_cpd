@@ -21,10 +21,10 @@ TrieNode* Trie::newNode(){
 void Trie::insert(string key, Movie* movie){
     auto pCrawl = rootNode;
 
-    for (int i = 0; i < key.length(); i++){
+    for (int i = 0; i < (int)key.length(); i++){
 
-        int index = tolower(key[i]); // ASCII do char
-        
+        int index = tolower(key[i]) - ' ';
+
         if (pCrawl->children[index] == NULL){
             pCrawl->children[index] = newNode();
         }
@@ -37,8 +37,8 @@ void Trie::insert(string key, Movie* movie){
 Movie* Trie::search(string key){
     auto pCrawl = rootNode;
 
-    for (int i = 0; i < key.length(); i++){
-        int index = key[i];
+    for (int i = 0; i < (int)key.length(); i++){
+        int index = tolower(key[i]);
         if (pCrawl->children[index] == NULL){
             return NULL;
         }
@@ -67,7 +67,7 @@ vector<pair<string, Movie*>> Trie::searchPrefix(string key){
     
     vector<pair<string, Movie*>> ans;
     
-    for (int i = 0; i < key.length(); i++){
+    for (int i = 0; i < (int)key.length(); i++){
 
         int index = tolower(key[i]); // ASCII do char
         if (pCrawl->children[index] == NULL){

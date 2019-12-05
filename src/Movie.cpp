@@ -30,3 +30,7 @@ const string Movie::toString() const {
 
     return buffer.str();
 }
+
+int Movie::getIdentifier(){
+    return id;
+}

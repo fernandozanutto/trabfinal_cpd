@@ -18,6 +18,8 @@ public:
     Movie(int _id, int _n, double _r);
     Movie(int _id, string _name, vector<string> _genre);
 
-    const string toString() const;
+    int getIdentifier();
+    
+    const string toString() const;    
 };
 

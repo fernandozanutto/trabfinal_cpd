@@ -13,6 +13,7 @@ public:
     
     User(int _id);
     void addMovie(Movie* movie, double rating);
+    int getIdentifier();
     const string toString() const;
 };
 

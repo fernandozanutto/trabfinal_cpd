@@ -5,7 +5,7 @@
 #include "Movie.h"
 using namespace std;
 
-const int ALPHABET_SIZE = 256;
+const int ALPHABET_SIZE = 96;
 
 class TrieNode {
 public:

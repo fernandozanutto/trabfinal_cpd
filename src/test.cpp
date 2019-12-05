@@ -8,16 +8,15 @@
 #include "header/User.h"
 #include "header/Movie.h"
 #include "header/Trie.h"
+#include "header/Tag.h"
 #include "header/ClearString.h"
 
 using namespace std;
 
 #include <ctime>
 
-
 int main(){
     clock_t begin = clock();
-    
       
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
@@ -27,12 +26,13 @@ int main(){
     Hash<Movie> hashRatings(5471); // ~27k movies
     Hash<User> hashUsers(27701); // ~138k users
     Trie films;
+    Hash<Tag> hashTags(90000); // ~490k entries
     
     /*
     Loading movies
     */
     fstream movie_trie;
-    movie_trie.open("movie.csv", ios::in);
+    movie_trie.open("movie_clean.csv", ios::in);
     string temp, name;
     int movie_id;
     
@@ -61,7 +61,7 @@ int main(){
     }
     
     fstream rating;
-    rating.open("rating.csv", ios::in);
+    rating.open("minirating.csv", ios::in);
     getline(rating, temp);
 
     while(getline(rating, temp)){
@@ -89,10 +89,37 @@ int main(){
     }
     
     
+    fstream tags;
+    tags.open("tags.csv", ios::in);
+    getline(rating, temp);
+
+    while(getline(rating, temp)){
+
+        stringstream s(temp);
+        string word;
+        getline(s, word, ',');
+        int userId = stoi(word);
+        
+        getline(s, word, ',');
+        int movieId = stoi(word);
+        
+        getline(s, word, '"'); //ignora o primeiro pra poder pegar o nome do filme limpo
+        getline(s, word, '"');
+        string tag = word;
+        
+        if(!hashTags.search(tag)){
+            hashTags[tag] = new Tag(tag);
+        }
+        
+        hashTags[tag]->addMovie(hashRatings[movieId]);
+    }
+    
+    
     clock_t end = clock();
     double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
     
     cout << "Time: " << elapsed_secs << " segundos" << endl;
+    
     return 0;
 
 }
