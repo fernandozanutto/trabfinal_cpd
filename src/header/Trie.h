@@ -24,6 +24,6 @@ public:
     Trie();
     void insert(string key, Movie *movie);
     Movie* search(string key);
-    vector<pair<string, Movie*>> searchPrefix(string key);
+    vector<Movie*> searchPrefix(string key);
 };
 

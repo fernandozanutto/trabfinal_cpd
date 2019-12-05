@@ -1,6 +1,8 @@
 #include "header/Movie.h"
 
 Movie::Movie(){
+    num_ratings = 0;
+    sum_ratings = 0;
 }
 
 Movie::Movie(int _id){

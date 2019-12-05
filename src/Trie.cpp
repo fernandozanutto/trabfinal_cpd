@@ -38,7 +38,7 @@ Movie* Trie::search(string key){
     auto pCrawl = rootNode;
 
     for (int i = 0; i < (int)key.length(); i++){
-        int index = tolower(key[i]);
+        int index = tolower(key[i]) - ' ';
         if (pCrawl->children[index] == NULL){
             return NULL;
         }
@@ -48,10 +48,10 @@ Movie* Trie::search(string key){
 }
 
 
-void dfs(vector<pair<string, Movie*>> &ans, TrieNode* node, string key){
+void dfs(vector<Movie*> &ans, TrieNode* node, string key){
 
     if(node->movie != NULL){
-        ans.push_back({key, node->movie});
+        ans.push_back(node->movie);
     }
     
     for(int i=0; i < ALPHABET_SIZE; i++){
@@ -62,14 +62,14 @@ void dfs(vector<pair<string, Movie*>> &ans, TrieNode* node, string key){
     }
 }
 
-vector<pair<string, Movie*>> Trie::searchPrefix(string key){
+vector<Movie*> Trie::searchPrefix(string key){
     auto pCrawl = rootNode;
     
-    vector<pair<string, Movie*>> ans;
+    vector<Movie*> ans;
     
     for (int i = 0; i < (int)key.length(); i++){
 
-        int index = tolower(key[i]); // ASCII do char
+        int index = tolower(key[i]) - ' '; // ASCII do char
         if (pCrawl->children[index] == NULL){
             return ans;
         }
