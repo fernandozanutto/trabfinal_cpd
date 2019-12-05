@@ -1,6 +1,8 @@
 #pragma once
 #include <string>
 #include <sstream>
+#include <vector>
+
 using namespace std;
 
 class Movie {
@@ -8,8 +10,8 @@ public:
     int id;
     int num_ratings;
     double sum_ratings;
-    string name; // fiz essas modificações para poder usar com a trie ja dai
-    string genres;
+    string name;
+    vector<string> genres;
 
     Movie();
     Movie(int _id);

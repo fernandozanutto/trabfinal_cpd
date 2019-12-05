@@ -6,12 +6,13 @@
 #include "header/User.h"
 #include "header/Movie.h"
 #include "header/Trie.h"
+#include "header/ClearString.h"
 
 using namespace std;
 
 
-int main()
-{
+int main() {
+
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     /*
@@ -20,6 +21,7 @@ int main()
     Hash<Movie> hashRatings(5471); // ~27k movies
     Hash<User> hashUsers(27701); // ~138k users
     Trie films;                 // ~27k movies
+    ClearString cl;
 
     /*
     Loading movies
@@ -27,12 +29,12 @@ int main()
     fstream movie_trie;
     movie_trie.open("movie.csv", ios::in);
     string temp, name;
-    vector<string> genre;
+    
     int movie_id;
 
     getline(movie_trie,temp);
-    while(getline(movie_trie, temp))
-    {
+    while(getline(movie_trie, temp)){
+    
         stringstream s(temp);
         string word;
         getline(s, word, ',');
@@ -40,12 +42,13 @@ int main()
 
         getline(s, word, '"'); //ignora o primeiro pra poder pegar o nome do filme limpo
         getline(s, word, '"');
-        name = clear_string(word);
+        name = cl.clear_string(word);
 
         getline(s, word, '"');// mesma coisa de antes
         getline(s, word, '"');
 
         //split genres
+        vector<string> genre;
         std::string delimiter = "|";
 
         size_t pos = 0;
@@ -67,8 +70,7 @@ int main()
     rating.open("rating.csv", ios::in);
     getline(rating, temp);
 
-    while(getline(rating, temp))
-    {
+    while(getline(rating, temp)){
 
         stringstream s(temp);
         string word;

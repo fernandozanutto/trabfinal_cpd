@@ -1,5 +1,8 @@
-string clear_string(string in){
-    static auto dictionary = map<string, string>();
+#include "header/ClearString.h"
+
+
+
+ClearString::ClearString(){
     dictionary.insert ( pair<string,string>("á","a") );
     dictionary.insert ( pair<string,string>("à","a") );
     dictionary.insert ( pair<string,string>("ã","a") );
@@ -69,6 +72,11 @@ string clear_string(string in){
     dictionary.insert ( pair<string,string>("ý","y") );
     dictionary.insert ( pair<string,string>("Ý","Y") );
 
+}
+    
+    
+    
+string ClearString::clear_string(string in){
     string new_str;
 
     for (auto it = dictionary.begin(); it != dictionary.end(); it++){

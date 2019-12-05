@@ -2,10 +2,13 @@
 #include <fstream>
 #include <sstream>
 #include <string>
+#include <vector>
+
 #include "header/Hash.h"
 #include "header/User.h"
 #include "header/Movie.h"
 #include "header/Trie.h"
+#include "header/ClearString.h"
 
 using namespace std;
 
@@ -30,7 +33,7 @@ int main(){
     */
     fstream movie_trie;
     movie_trie.open("movie.csv", ios::in);
-    string temp, name, genre;
+    string temp, name;
     int movie_id;
     
     getline(movie_trie,temp);
@@ -45,10 +48,12 @@ int main(){
         getline(s, word, '"'); //ignora o primeiro pra poder pegar o nome do filme limpo
         getline(s, word, '"');
         name = word;
-        
+
+        vector<string> genre;
+
         getline(s, word, '"'); // mesma coisa de antes
         getline(s, word, '"');
-        genre = word;
+        genre.push_back(word);
         
         Movie* a = new Movie(movie_id, name, genre);
         hashRatings[movie_id] = a;
@@ -58,7 +63,7 @@ int main(){
     fstream rating;
     rating.open("rating.csv", ios::in);
     getline(rating, temp);
-    
+
     while(getline(rating, temp)){
 
         stringstream s(temp);

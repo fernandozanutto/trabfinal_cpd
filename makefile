@@ -3,11 +3,11 @@
 all: moviesrating.exe
 teste: teste.exe
 
-moviesrating.exe: main.o user.o movie.o trie.o
-	g++ -o moviesrating.exe movie.o user.o trie.o main.o -g -std=c++14
+moviesrating.exe: main.o user.o movie.o trie.o clear.o
+	g++ -o moviesrating.exe movie.o user.o trie.o clear.o main.o -g -std=c++14
 
-teste.exe: test.o user.o movie.o trie.o
-	g++ -o teste.exe movie.o user.o trie.o test.o -g -std=c++14
+teste.exe: test.o user.o movie.o trie.o clear.o
+	g++ -o teste.exe movie.o user.o trie.o clear.o test.o -g -std=c++14
 
 movie.o:
 	g++ -c src/Movie.cpp -o movie.o -g -std=c++14
@@ -20,6 +20,9 @@ main.o: src/main.cpp src/Hash.cpp src/header/Hash.h
 
 trie.o: src/header/Trie.h src/Trie.cpp
 	g++ -c src/Trie.cpp -o trie.o -g -std=c++14
+
+clear.o: src/ClearString.cpp src/header/ClearString.h
+	g++ -c src/ClearString.cpp -o clear.o -std=c++14
 
 test.o: src/test.cpp src/Hash.cpp src/header/Hash.h
 	g++ -c src/test.cpp -o test.o -g -std=c++14
