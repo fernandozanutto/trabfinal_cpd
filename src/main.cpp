@@ -140,8 +140,8 @@ int main() {
         
         if(option.compare("movie") == 0){
         
-            getline(linha_terminal, option, ' ');
-            
+            getline(linha_terminal, option);
+
             vector<Movie*> key = trieMovies.searchPrefix(option);
             
             cout << "Movie Id" << '\t' << "Title"<< '\t' << "Genres" << '\t' << "Rating" << '\t' << "Counting"<< endl;
