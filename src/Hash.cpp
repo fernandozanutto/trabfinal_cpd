@@ -8,11 +8,10 @@ Hash<K>::Hash(int s){
 
 template <class K>
 int Hash<K>::hashFunction(int key) {
-    int c2 = 0x27d4eb2d; // a prime or an odd constant
     key = (key ^ 61) ^ (key >> 16);
     key = key + (key << 3);
     key = key ^ (key >> 4);
-    key = key * c2;
+    key = key * 0x27d4eb2d; // a prime or an odd constant
     key = key ^ (key >> 15);
 
     return key % size;
