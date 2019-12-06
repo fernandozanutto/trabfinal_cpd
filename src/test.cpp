@@ -23,9 +23,9 @@ int main(){
     /*
     Loading movies rating
     */
-    Hash<Movie> hashRatings(5471); // ~27k movies
+    Hash<Movie> hashRatings(5807); // ~27k movies
     Hash<User> hashUsers(27701); // ~138k users
-    Trie films;
+    Trie trieMovies;
     Hash<Tag> hashTags(90000); // ~490k entries
     
     /*
@@ -37,7 +37,7 @@ int main(){
     int movie_id;
     
     getline(movie_trie,temp);
-    
+    cout << "lendo filmes completo" << endl;
     while(getline(movie_trie, temp)){
         
         stringstream s(temp);
@@ -57,13 +57,13 @@ int main(){
         
         Movie* a = new Movie(movie_id, name, genre);
         hashRatings[movie_id] = a;
-        films.insert(name, a);
+        trieMovies.insert(name, a);
     }
-    
+    cout << "colisoes: " << hashRatings.colisions << endl;
     fstream rating;
-    rating.open("minirating.csv", ios::in);
+    rating.open("rating.csv", ios::in);
     getline(rating, temp);
-
+    cout << "lendo ratings completo" << endl;
     while(getline(rating, temp)){
 
         stringstream s(temp);
@@ -87,9 +87,10 @@ int main(){
         }
         hashUsers[userId]->addMovie(m, r);
     }
-    
+    cout << "colisoes: " << hashRatings.colisions << endl;
     
     fstream tags;
+    cout << "lendo tags completo" << endl;
     tags.open("tags.csv", ios::in);
     getline(rating, temp);
 

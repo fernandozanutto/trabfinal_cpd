@@ -18,7 +18,7 @@ int main() {
     /*
     Loading movies rating
     */
-    Hash<Movie> hashRatings(5471); // ~27k movies
+    Hash<Movie> hashRatings(5807); // ~27k movies
     Hash<User> hashUsers(27701); // ~138k users
     Hash<Tag> hashTags(90000); // ~490k entries
     Trie trieMovies;                 // ~27k movies
@@ -64,7 +64,7 @@ int main() {
     }
 
     fstream rating;
-    rating.open("minirating.csv", ios::in);
+    rating.open("rating.csv", ios::in);
     getline(rating, temp);
 
     while(getline(rating, temp)){

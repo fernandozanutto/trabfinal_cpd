@@ -1,31 +1,35 @@
 template <class K>
 Hash<K>::Hash(int s){
+    colisions = 0;
     size = s;
     table.assign(s, vector<K*>());
 }
 
 
 template <class K>
-int Hash<K>::hashFunction(int x) {
-    x = ((x >> 16) ^ x) * 0x45d9f3b;
-    x = ((x >> 16) ^ x) * 0x45d9f3b;
-    x = (x >> 16) ^ x;
+int Hash<K>::hashFunction(int key) {
+    int c2 = 0x27d4eb2d; // a prime or an odd constant
+    key = (key ^ 61) ^ (key >> 16);
+    key = key + (key << 3);
+    key = key ^ (key >> 4);
+    key = key * c2;
+    key = key ^ (key >> 15);
 
-    return x % size;
+    return key % size;
 }
 
-
-int exp(int a, int b){
+template <class K>
+int Hash<K>::exp(int a, int b){
     cout << a << " " << b << endl;
     if(b == 0) return 1;
     if(b == 1) return a;
 
     int res = exp(a, b>>1);
-    res = res * res;
+    res = (res * res) % size;
     
-    if(b & 1) res = res * a;
+    if(b & 1) res = (res * a) % size;
         
-    return res;
+    return res % size;
 }
 
 template <class K>
@@ -43,6 +47,7 @@ int Hash<K>::hashFunction(string x) {
 template <class K>
 void Hash<K>::insert(K* s){
     int pos = hashFunction(s->getIdentifier());
+    colisions += table[pos].size();
     table[pos].push_back(s);
 }
 
@@ -53,6 +58,7 @@ bool Hash<K>::search(int s){
     for(int i=0; i < (int)table[pos].size(); i++){
         if(s == table[pos][i]->getIdentifier())
             return true;
+        colisions++;
     }
     return false;
 }
@@ -64,6 +70,7 @@ bool Hash<K>::search(string s){
     for(int i=0; i < (int)table[pos].size(); i++){
         if(s == table[pos][i]->getIdentifier())
             return true;
+        colisions++;
     }
     return false;
 }
@@ -78,9 +85,11 @@ K* &Hash<K>::operator[](int index){
     } else {
         int i;
         for(i=0; i < (int)table[pos].size(); i++){
+            colisions++;
             if(table[pos][i]->getIdentifier() == index){
                 return table[pos][i];
             }
+            
         }
 
         table[pos].push_back(NULL);
@@ -102,6 +111,7 @@ K* &Hash<K>::operator[](string index){
             if(table[pos][i]->getIdentifier() == index){
                 return table[pos][i];
             }
+            colisions++;
         }
 
         table[pos].push_back(NULL);
