@@ -15,17 +15,12 @@ int main() {
 
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
-    /*
-    Loading movies rating
-    */
+
     Hash<Movie> hashRatings(5807); // ~27k movies
     Hash<User> hashUsers(27701); // ~138k users
     Hash<Tag> hashTags(90000); // ~490k entries
     Trie trieMovies;                 // ~27k movies
 
-    /*
-    Loading movies
-    */
     fstream movie_trie;
     movie_trie.open("movie_clean.csv", ios::in);
     string temp, name;
@@ -55,7 +50,7 @@ int main() {
             genre.push_back(word.substr(0, pos));
             word.erase(0, pos + delimiter.length());
         }
-        
+
         genre.push_back(word);
 
         Movie* a = new Movie(movie_id, name, genre);
@@ -88,11 +83,11 @@ int main() {
         if(!hashUsers.search(userId)){
             hashUsers[userId] = new User(userId);
         }
-        
+
         hashUsers[userId]->addMovie(m, r);
     }
-    
-    
+
+
     fstream tags;
     tags.open("tags.csv", ios::in);
     getline(tags, temp);
@@ -103,58 +98,58 @@ int main() {
         string word;
         getline(s, word, ',');
         int userId = stoi(word);
-        
+
         getline(s, word, ',');
         int movieId = stoi(word);
-        
+
         getline(s, word, '"'); //ignora o primeiro pra poder pegar o nome do filme limpo
         getline(s, word, '"');
         string tag = word;
-        
+
         if(!hashTags.search(tag)){
             hashTags[tag] = new Tag(tag);
         }
-        
+
         hashTags[tag]->addMovie(hashRatings[movieId]);
     }
 
 
     // TODO: terminar modo de linha de comando
-    // TODO: fazer a intersecção de filmes em cada tag
+    // TODO: fazer a intersecï¿½ï¿½o de filmes em cada tag
     cout << "TA TUDO CARREGADO. LETs DALE" << endl;
 
-    while(true){    
+    while(true){
         string entrada;
         string option;      // movie, user, top or tag
-        
-        
+
+
         cout << "\n\nO que deseja fazer? " << flush;
-        
-        
-        
+
+
+
         getline(cin, entrada);
         stringstream linha_terminal(entrada);
-        
+
         getline(linha_terminal, option, ' ');
         cout << "DEBUG: " << entrada << " ---- " << option << endl;
-        
+
         if(option.compare("movie") == 0){
-        
+
             getline(linha_terminal, option);
 
             vector<Movie*> key = trieMovies.searchPrefix(option);
-            
+
             cout << "Movie Id" << '\t' << "Title"<< '\t' << "Genres" << '\t' << "Rating" << '\t' << "Counting"<< endl;
             cout <<"---------------------------------------------------------------------"<< endl;
 
             for(int i=0; i<(int)key.size(); i++){
-            
+
                 cout << key[i]->id <<'\t' << key[i]->name << '\t';
 
                 for(int j=0; j < (int)key[i]->genres.size(); j++){
                     cout << key[i]->genres[j] << "|";
                 }
-                
+
                 int rate = key[i]->num_ratings != 0 ? (key[i]->sum_ratings)/(key[i]->num_ratings) : 0;
                 cout << rate << '\t' << key[i]->num_ratings << endl;
             }
@@ -163,7 +158,19 @@ int main() {
 
         else if (option.compare("user") == 0)
         {
-            //listar os filmes avaliados
+            getline(linha_terminal,option);
+            cout << "Title"<<'\t'<< "User Rating"<< '\t'<< "Global Rating"<<'\t'<< "Counting"<< endl;
+            cout <<"---------------------------------------------------------------------"<< endl;
+            int user_id=stoi(option);
+            for(int i=0;i<hashUsers[user_id]->ratings.size();i++)
+            {
+                cout << hashUsers[user_id]->ratings[i].first->name << '\t';
+                cout << hashUsers[user_id]->ratings[i].second <<'\t';
+                vector<Movie*> key = trieMovies.searchPrefix(hashUsers[user_id]->rating[i].fist->name);
+                int rate = key[i]->num_ratings != 0 ? (key[i]->sum_ratings)/(key[i]->num_ratings) : 0;
+                cout << rate << '\t' << key[i]->num_ratings << endl;
+
+            }
         }
 
         else if (option.compare("top") == 0)
@@ -179,7 +186,7 @@ int main() {
             break;
         }
     }
-    
+
     return 0;
 }
 
