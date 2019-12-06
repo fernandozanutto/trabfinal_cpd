@@ -11,9 +11,9 @@ class Hash {
 private:
     int size;
     vector<vector<K*>> table;
-    
+    int exp(int a, int b);
 public:   
-    
+    int colisions;
     Hash(int s);
     
     int hashFunction(int x);
