@@ -9,8 +9,8 @@ using namespace std;
 class User {
 public:
     int id;
-    vector<pair<Movie*, int>> ratings;
-    
+    vector<pair<Movie*, double>> ratings;
+
     User(int _id);
     void addMovie(Movie* movie, double rating);
     int getIdentifier();
