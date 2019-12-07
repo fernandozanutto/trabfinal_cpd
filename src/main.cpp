@@ -123,7 +123,7 @@ int main() {
         hashTags[tag]->addMovie(hashRatings[movieId]);
     }
 
-    // TODO: terminar modo de linha de comando
+    // TODO: revisar modo de linha de comando
     // TODO: limpar arquivo de tag / ler de forma correta a tag
     
     cout << "TA TUDO CARREGADO. LETs DALE" << endl;
