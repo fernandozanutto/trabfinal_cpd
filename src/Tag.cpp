@@ -19,20 +19,20 @@ string Tag::getIdentifier(){
 }
 
 vector<Movie*> Tag::getIntersection(const vector<Movie*> &another){
-    int s = another.size();
     
     vector<Movie*> answer;
     
     for(int i=0; i < (int) movies.size(); i++){
         int l=0;
-        int r=s;
+        int r=another.size();
         
         while(l<r){
-            int mid = (r-l) / 2;
+            int mid = (l+r) / 2;
+            
             if(another[mid]->id > movies[i]->id){
                 r = mid;
             } else if (another[mid]->id < movies[i]->id) {
-                l = mid;
+                l = mid + 1;
             } else {
                 answer.push_back(movies[i]);
                 break;

@@ -114,6 +114,7 @@ int main(){
         hashTags[tag]->addMovie(hashRatings[movieId]);
     }
     
+    cout << "encontrados:    " << (hashTags["violent"]->getIntersection(hashTags["funny"]->movies).size()) << endl;
     
     clock_t end = clock();
     double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
@@ -121,5 +122,4 @@ int main(){
     cout << "Time: " << elapsed_secs << " segundos" << endl;
     
     return 0;
-
 }
