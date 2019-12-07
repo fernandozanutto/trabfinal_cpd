@@ -16,5 +16,6 @@ public:
     string getIdentifier();
     
     void addMovie(Movie* movie);
+    vector<Movie*> getIntersection(const vector<Movie*> &another);
 };
 

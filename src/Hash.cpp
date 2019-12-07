@@ -18,25 +18,14 @@ int Hash<K>::hashFunction(int key) {
 }
 
 template <class K>
-int Hash<K>::exp(int a, int b){
-    cout << a << " " << b << endl;
-    if(b == 0) return 1;
-    if(b == 1) return a;
-
-    int res = exp(a, b>>1);
-    res = (res * res) % size;
-    
-    if(b & 1) res = (res * a) % size;
-        
-    return res % size;
-}
-
-template <class K>
 int Hash<K>::hashFunction(string x) {
+
     int hash = 0;
-    
-    for(int i=0; i < (int)x.size(); i++){
-        hash = (hash + ((x[i] - ' ') * exp(PRIME, i)) % size) % size;
+    int p = 1;
+    for(int i=0; i < (int) x.size(); i++){
+
+        hash = (hash + (((x[i] - ' ') * p) % size)) % size;
+        p = (p * PRIME) % size;
     }
 
     return hash % size;

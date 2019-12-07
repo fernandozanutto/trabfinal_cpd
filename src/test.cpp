@@ -61,9 +61,9 @@ int main(){
     }
     cout << "colisoes: " << hashRatings.colisions << endl;
     fstream rating;
-    rating.open("rating.csv", ios::in);
+    rating.open("minirating.csv", ios::in);
     getline(rating, temp);
-    cout << "lendo ratings completo" << endl;
+    cout << "lendo miniratings completo" << endl;
     while(getline(rating, temp)){
 
         stringstream s(temp);
@@ -90,11 +90,10 @@ int main(){
     cout << "colisoes: " << hashRatings.colisions << endl;
     
     fstream tags;
-    cout << "lendo tags completo" << endl;
-    tags.open("tags.csv", ios::in);
-    getline(rating, temp);
+    tags.open("minitag.csv", ios::in);
+    getline(tags, temp);
 
-    while(getline(rating, temp)){
+    while(getline(tags, temp)){
 
         stringstream s(temp);
         string word;
