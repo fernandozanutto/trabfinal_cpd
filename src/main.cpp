@@ -126,14 +126,13 @@ int main() {
         hashTags[cl.clear_string(tag)]->addMovie(hashRatings[movieId]);
     }
 
-    // TODO: revisar modo de linha de comando
-    // TODO: limpar arquivo de tag / ler de forma correta a tag
+    // TODO: revisar linha de comando e se tudo esta funcionando
     
     cout << "TA TUDO CARREGADO. LETs DALE" << endl;
 
     while(true){
         string entrada;
-        string option;      // movie, user, top or tag
+        string option; // movie, user, top or tag
 
         cout << "\n\nO que deseja fazer? " << flush;
 
