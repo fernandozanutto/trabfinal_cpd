@@ -12,8 +12,7 @@ private:
     int size;
     vector<vector<K*>> table;
 
-public:   
-    int colisions;
+public:
     Hash(int s);
     
     int hashFunction(int x);

@@ -9,6 +9,7 @@
 #include "header/Movie.h"
 #include "header/Trie.h"
 #include "header/Tag.h"
+#include "header/Genre.h"
 #include "header/ClearString.h"
 
 using namespace std;
@@ -27,6 +28,7 @@ int main(){
     Hash<User> hashUsers(27701); // ~138k users
     Trie trieMovies;
     Hash<Tag> hashTags(90000); // ~490k entries
+    Hash<Genre> hashGenres(5000); // no ideia how many different genres there are
     
     /*
     Loading movies
@@ -34,36 +36,52 @@ int main(){
     fstream movie_trie;
     movie_trie.open("movie_clean.csv", ios::in);
     string temp, name;
-    int movie_id;
     
     getline(movie_trie,temp);
-    cout << "lendo filmes completo" << endl;
+    cout << "lendo filmes" << endl;
     while(getline(movie_trie, temp)){
-        
+
         stringstream s(temp);
         string word;
         getline(s, word, ',');
         int movie_id = stoi(word);
-        
+
         getline(s, word, '"'); //ignora o primeiro pra poder pegar o nome do filme limpo
         getline(s, word, '"');
         name = word;
 
-        vector<string> genre;
-
-        getline(s, word, '"'); // mesma coisa de antes
+        getline(s, word, '"');// mesma coisa de antes
         getline(s, word, '"');
+
+        //split genres
+        vector<string> genre;
+        std::string delimiter = "|";
+
+        size_t pos = 0;
+        string token;
+        while ((pos = word.find(delimiter)) != string::npos){
+            genre.push_back(word.substr(0, pos));
+            word.erase(0, pos + delimiter.length());
+        }
+
         genre.push_back(word);
-        
+
         Movie* a = new Movie(movie_id, name, genre);
         hashRatings[movie_id] = a;
         trieMovies.insert(name, a);
+        
+        for(int i=0; i < (int) genre.size(); i++){
+            if(!hashGenres.search(genre[i])){
+                hashGenres[genre[i]] = new Genre(genre[i]);
+            }
+            
+            hashGenres[genre[i]]->addMovie(a);
+        }
     }
-    cout << "colisoes: " << hashRatings.colisions << endl;
+    
     fstream rating;
     rating.open("minirating.csv", ios::in);
     getline(rating, temp);
-    cout << "lendo miniratings completo" << endl;
     while(getline(rating, temp)){
 
         stringstream s(temp);
@@ -87,34 +105,10 @@ int main(){
         }
         hashUsers[userId]->addMovie(m, r);
     }
-    cout << "colisoes: " << hashRatings.colisions << endl;
     
-    fstream tags;
-    tags.open("minitag.csv", ios::in);
-    getline(tags, temp);
-
-    while(getline(tags, temp)){
-
-        stringstream s(temp);
-        string word;
-        getline(s, word, ',');
-        int userId = stoi(word);
-        
-        getline(s, word, ',');
-        int movieId = stoi(word);
-        
-        getline(s, word, '"'); //ignora o primeiro pra poder pegar o nome do filme limpo
-        getline(s, word, '"');
-        string tag = word;
-        
-        if(!hashTags.search(tag)){
-            hashTags[tag] = new Tag(tag);
-        }
-        
-        hashTags[tag]->addMovie(hashRatings[movieId]);
+    for(auto a: hashGenres["War"]->getTop(15)){
+        cout << a->toString() << endl;
     }
-    
-    cout << "encontrados:    " << (hashTags["violent"]->getIntersection(hashTags["funny"]->movies).size()) << endl;
     
     clock_t end = clock();
     double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;

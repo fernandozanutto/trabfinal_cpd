@@ -7,6 +7,7 @@
 #include "header/Movie.h"
 #include "header/Trie.h"
 #include "header/Tag.h"
+#include "header/Genre.h"
 
 using namespace std;
 
@@ -19,6 +20,7 @@ int main() {
     Hash<Movie> hashRatings(5807); // ~27k movies
     Hash<User> hashUsers(27701); // ~138k users
     Hash<Tag> hashTags(90000); // ~490k entries
+    Hash<Genre> hashGenres(5000); // no ideia how many different genres there are
     Trie trieMovies;                 // ~27k movies
 
     fstream movie_trie;
@@ -45,8 +47,8 @@ int main() {
         std::string delimiter = "|";
 
         size_t pos = 0;
-        std::string token;
-        while ((pos = word.find(delimiter)) != std::string::npos){
+        string token;
+        while ((pos = word.find(delimiter)) != string::npos){
             genre.push_back(word.substr(0, pos));
             word.erase(0, pos + delimiter.length());
         }
@@ -56,6 +58,14 @@ int main() {
         Movie* a = new Movie(movie_id, name, genre);
         hashRatings[movie_id] = a;
         trieMovies.insert(name, a);
+        
+        for(int i=0; i < (int) genre.size(); i++){
+            if(!hashGenres.search(genre[i])){
+                hashGenres[genre[i]] = new Genre(genre[i]);
+            }
+            
+            hashGenres[genre[i]]->addMovie(a);
+        }
     }
 
     fstream rating;
@@ -97,7 +107,7 @@ int main() {
         stringstream s(temp);
         string word;
         getline(s, word, ',');
-        int userId = stoi(word);
+        int userId = stoi(word); // TODO: will this be used?
 
         getline(s, word, ',');
         int movieId = stoi(word);
@@ -113,7 +123,6 @@ int main() {
         hashTags[tag]->addMovie(hashRatings[movieId]);
     }
 
-    // TODO: salvar generos para pegar todos os filmes de tal genero
     // TODO: terminar modo de linha de comando
     // TODO: limpar arquivo de tag / ler de forma correta a tag
     
@@ -150,7 +159,6 @@ int main() {
                 int rate = key[i]->num_ratings != 0 ? (key[i]->sum_ratings)/(key[i]->num_ratings) : 0;
                 cout << rate << '\t' << key[i]->num_ratings << endl;
             }
-
         }
 
         else if (option.compare("user") == 0){
@@ -171,7 +179,17 @@ int main() {
             }
         }
 
-        else if (option.compare("top") == 0){
+        else if (option.substr(0,3).compare("top") == 0){
+            int n = stoi(option.substr(3,option.size()-3));
+            getline(linha_terminal, option);
+            if(hashGenres.search(option)){   
+                for(auto a: hashGenres[option]->getTop(n)){
+                    cout << a->toString() << endl;
+                }
+                
+            } else {
+                cout << "Nenhum gênero encontrado com este nome" << endl;
+            }
             //ranking dos filmes de um genero
         }
 
@@ -185,11 +203,11 @@ int main() {
             }
             
             vector<Movie*> ans;
-            if(hashTags[tags[0]] != NULL){
+            if(hashTags.search(tags[0])){
                 ans = hashTags[tags[0]]->movies;
 
                 for(int i=1; i < (int)tags.size(); i++){
-                    if(hashTags[tags[i]] != NULL){
+                    if(hashTags.search(tags[i])){
                         ans = hashTags[tags[i]]->getIntersection(ans);
                     } else {
                         ans.clear();

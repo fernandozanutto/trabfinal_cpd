@@ -1,6 +1,5 @@
 template <class K>
 Hash<K>::Hash(int s){
-    colisions = 0;
     size = s;
     table.assign(s, vector<K*>());
 }
@@ -35,7 +34,6 @@ int Hash<K>::hashFunction(string x) {
 template <class K>
 void Hash<K>::insert(K* s){
     int pos = hashFunction(s->getIdentifier());
-    colisions += table[pos].size();
     table[pos].push_back(s);
 }
 
@@ -46,7 +44,6 @@ bool Hash<K>::search(int s){
     for(int i=0; i < (int)table[pos].size(); i++){
         if(s == table[pos][i]->getIdentifier())
             return true;
-        colisions++;
     }
     return false;
 }
@@ -58,7 +55,6 @@ bool Hash<K>::search(string s){
     for(int i=0; i < (int)table[pos].size(); i++){
         if(s == table[pos][i]->getIdentifier())
             return true;
-        colisions++;
     }
     return false;
 }
@@ -73,7 +69,6 @@ K* &Hash<K>::operator[](int index){
     } else {
         int i;
         for(i=0; i < (int)table[pos].size(); i++){
-            colisions++;
             if(table[pos][i]->getIdentifier() == index){
                 return table[pos][i];
             }
@@ -99,7 +94,6 @@ K* &Hash<K>::operator[](string index){
             if(table[pos][i]->getIdentifier() == index){
                 return table[pos][i];
             }
-            colisions++;
         }
 
         table[pos].push_back(NULL);

@@ -3,11 +3,11 @@
 all: moviesrating.exe
 teste: teste.exe
 
-moviesrating.exe: main.o user.o movie.o trie.o tag.o
-	g++ -Wall -o moviesrating.exe movie.o user.o trie.o tag.o main.o -g -std=c++14
+moviesrating.exe: main.o user.o movie.o trie.o tag.o genre.o
+	g++ -Wall -o moviesrating.exe movie.o user.o trie.o tag.o genre.o main.o -g -std=c++14
 
-teste.exe: test.o user.o movie.o trie.o tag.o
-	g++ -Wall -o teste.exe movie.o user.o trie.o tag.o test.o -g -O3 -std=c++14
+teste.exe: test.o user.o movie.o trie.o tag.o genre.o
+	g++ -Wall -o teste.exe movie.o user.o trie.o tag.o genre.o test.o -g -O3 -std=c++14
 
 movie.o:
 	g++ -Wall -c src/Movie.cpp -o movie.o -g -O3 -std=c++14
@@ -23,6 +23,9 @@ trie.o: src/header/Trie.h src/Trie.cpp
 
 tag.o: src/header/Tag.h src/Tag.cpp
 	g++ -Wall -c src/Tag.cpp -o tag.o -g -O3 -std=c++14
+
+genre.o: src/header/Genre.h src/Genre.cpp
+	g++ -Wall -c src/Genre.cpp -o genre.o -O3 -std=c++14
 
 test.o: src/test.cpp src/Hash.cpp src/header/Hash.h
 	g++ -Wall -c src/test.cpp -o test.o -g -O3 -std=c++14
