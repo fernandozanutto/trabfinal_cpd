@@ -22,7 +22,7 @@ int main() {
     Hash<User> hashUsers(27701); // ~138k users
     Hash<Tag> hashTags(90000); // ~490k entries
     Hash<Genre> hashGenres(5000); // TODO: review size, no ideia how many different genres there are
-    Trie trieMovies;                 // ~27k movies
+    Trie trieMovies;
     ClearString cl;
 
     fstream movie_trie;
@@ -222,7 +222,7 @@ int main() {
             if(ans.size() == 0){
                 cout << "Não foram encontrados resultado." << endl;
             } else {
-                for(int i=0; i < (int)ans.size(); i++){
+                for(int i=0; i < (int) ans.size(); i++){
                     cout << ans[i]->toString() << endl;
                 }
             }
