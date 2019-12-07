@@ -122,7 +122,7 @@ int main() {
         if(!hashTags.search(cl.clear_string(tag))){
             hashTags[cl.clear_string(tag)] = new Tag(tag, cl.clear_string(tag));
         }
-        //TODO: dont add repeated movies
+        
         hashTags[cl.clear_string(tag)]->addMovie(hashRatings[movieId]);
     }
 

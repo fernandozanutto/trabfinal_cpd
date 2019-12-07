@@ -13,13 +13,23 @@ Tag::Tag(string _tag, string _id){
 
 
 void Tag::addMovie(Movie* movie){
-    int i;
-    for(i=0; i < (int) movies.size(); i++){
-        if(movies[i]->id > movie->id){
-            break;
+
+    int l=0;
+    int r=movies.size();
+    
+    while(l<r){
+        int mid = (l+r) / 2;
+        
+        if(movies[mid]->id > movie->id){
+            r = mid;
+        } else if (movies[mid]->id < movie->id) {
+            l = mid + 1;
+        } else {
+            return; //movie already exists
         }
     }
-    movies.insert(movies.begin() + i, movie);
+
+    movies.insert(movies.begin() + l, movie);
 }
 
 string Tag::getIdentifier(){
