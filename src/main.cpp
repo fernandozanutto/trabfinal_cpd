@@ -59,7 +59,7 @@ int main() {
     }
 
     fstream rating;
-    rating.open("rating.csv", ios::in);
+    rating.open("minirating.csv", ios::in);
     getline(rating, temp);
 
     while(getline(rating, temp)){
@@ -89,7 +89,7 @@ int main() {
 
 
     fstream tags;
-    tags.open("tags.csv", ios::in);
+    tags.open("minitag.csv", ios::in);
     getline(tags, temp);
 
     while(getline(tags, temp)){
@@ -115,7 +115,6 @@ int main() {
 
 
     // TODO: terminar modo de linha de comando
-    // TODO: fazer a intersecçãoo de filmes em cada tag
     // TODO: limpar arquivo de tag / ler de forma correta a tag
     
     cout << "TA TUDO CARREGADO. LETs DALE" << endl;
@@ -124,16 +123,12 @@ int main() {
         string entrada;
         string option;      // movie, user, top or tag
 
-
         cout << "\n\nO que deseja fazer? " << flush;
-
-
 
         getline(cin, entrada);
         stringstream linha_terminal(entrada);
 
-        getline(linha_terminal, option, ' ');
-        cout << "DEBUG: " << entrada << " ---- " << option << endl;
+        getline(linha_terminal, option, ' ');   
 
         if(option.compare("movie") == 0){
 
@@ -144,7 +139,7 @@ int main() {
             cout << "Movie Id" << '\t' << "Title"<< '\t' << "Genres" << '\t' << "Rating" << '\t' << "Counting"<< endl;
             cout <<"---------------------------------------------------------------------"<< endl;
 
-            for(int i=0; i<(int)key.size(); i++){
+            for(int i=0; i < (int)key.size(); i++){
 
                 cout << key[i]->id <<'\t' << key[i]->name << '\t';
 
@@ -158,32 +153,60 @@ int main() {
 
         }
 
-        else if (option.compare("user") == 0)
-        {
-            getline(linha_terminal,option);
+        else if (option.compare("user") == 0){
+        
+            getline(linha_terminal, option);
             cout << "Title"<<'\t'<< "User Rating"<< '\t'<< "Global Rating"<<'\t'<< "Counting"<< endl;
             cout <<"---------------------------------------------------------------------"<< endl;
-            int user_id=stoi(option);
-            for(int i=0;i<hashUsers[user_id]->ratings.size();i++)
-            {
-                cout << hashUsers[user_id]->ratings[i].first->name << '\t';
-                cout << hashUsers[user_id]->ratings[i].second <<'\t';
-                vector<Movie*> key = trieMovies.searchPrefix(hashUsers[user_id]->rating[i].fist->name);
-                int rate = key[i]->num_ratings != 0 ? (key[i]->sum_ratings)/(key[i]->num_ratings) : 0;
-                cout << rate << '\t' << key[i]->num_ratings << endl;
+            int user_id = stoi(option);
+            vector<pair<Movie*, double>> movies = hashUsers[user_id]->ratings;
+            for(int i=0; i < (int) movies.size(); i++){
+            
+                cout << movies[i].first->name << '\t';
+                cout << movies[i].second <<'\t';
+                
+                int rate = movies[i].first->num_ratings != 0 ? (movies[i].first->sum_ratings)/(movies[i].first->num_ratings) : 0;
+                cout << rate << '\t' << movies[i].first->num_ratings << endl;
 
             }
         }
 
-        else if (option.compare("top") == 0)
-        {
+        else if (option.compare("top") == 0){
             //ranking dos filmes de um genero
         }
 
-        else if(option.compare("tag") == 0)
-        {
+        else if(option.compare("tag") == 0){
             //lista os filme com a tag dada
+            vector<string> tags;
+            getline(linha_terminal, option, '"');
+            while(getline(linha_terminal, option, '"')){
+                tags.push_back(option);
+                getline(linha_terminal, option, '"');
+            }
+            
+            vector<Movie*> ans;
+            if(hashTags[tags[0]] != NULL){
+                ans = hashTags[tags[0]]->movies;
+
+                for(int i=1; i < (int)tags.size(); i++){
+                    if(hashTags[tags[i]] != NULL){
+                        ans = hashTags[tags[i]]->getIntersection(ans);
+                    } else {
+                        ans.clear();
+                        break;
+                    }
+                }
+            }
+            
+            if(ans.size() == 0){
+                cout << "Não foram encontrados resultado." << endl;
+            } else {
+                for(int i=0; i < (int)ans.size(); i++){
+                    cout << ans[i]->toString() << endl;
+                }
+            }
         }
+        
         else if(option.compare("exit") == 0){
             break;
         }
