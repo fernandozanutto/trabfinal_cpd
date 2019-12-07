@@ -115,7 +115,9 @@ int main() {
 
 
     // TODO: terminar modo de linha de comando
-    // TODO: fazer a intersecï¿½ï¿½o de filmes em cada tag
+    // TODO: fazer a intersecçãoo de filmes em cada tag
+    // TODO: limpar arquivo de tag / ler de forma correta a tag
+    
     cout << "TA TUDO CARREGADO. LETs DALE" << endl;
 
     while(true){
