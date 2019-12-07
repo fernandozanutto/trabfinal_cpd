@@ -113,7 +113,7 @@ int main() {
         hashTags[tag]->addMovie(hashRatings[movieId]);
     }
 
-
+    // TODO: salvar generos para pegar todos os filmes de tal genero
     // TODO: terminar modo de linha de comando
     // TODO: limpar arquivo de tag / ler de forma correta a tag
     
