@@ -21,7 +21,7 @@ vector<Movie*> Genre::getTop(int n){
         isSorted = true;
     }
     
-    for(int i=0; i < n && i < movies.size(); i++){
+    for(int i=0; i < n && i < (int)movies.size(); i++){
         ans.push_back(movies[i]);
     }
     

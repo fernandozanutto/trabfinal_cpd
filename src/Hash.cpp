@@ -26,7 +26,6 @@ int Hash<K>::hashFunction(string x) {
         hash = (hash + (((x[i] - ' ') * p) % size)) % size;
         p = (p * PRIME) % size;
     }
-
     return hash % size;
 }
 

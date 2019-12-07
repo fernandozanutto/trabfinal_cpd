@@ -17,7 +17,18 @@ using namespace std;
 #include <ctime>
 
 int main(){
+    //setlocale(LC_ALL, "en_US.UTF-8");
     clock_t begin = clock();
+    
+    string a = "Å";
+    cout << "teste asçãsdwẽqçãsçd" << endl;
+    cout << a.size() << endl;
+    for(int i=0; i<a.size(); i++){
+        unsigned char t = a[i];
+        cout << t << endl;
+    }
+    return 0;
+    
       
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);

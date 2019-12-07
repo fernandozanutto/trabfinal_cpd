@@ -2,7 +2,15 @@
 
 Tag::Tag(string _tag){
     tag = _tag;
+    identifier = _tag;
 }
+
+
+Tag::Tag(string _tag, string _id){
+    tag = _tag;
+    identifier = _id;
+}
+
 
 void Tag::addMovie(Movie* movie){
     int i;
@@ -15,7 +23,7 @@ void Tag::addMovie(Movie* movie){
 }
 
 string Tag::getIdentifier(){
-    return tag;
+    return identifier;
 }
 
 vector<Movie*> Tag::getIntersection(const vector<Movie*> &another){

@@ -1,7 +1,5 @@
 #include "header/ClearString.h"
 
-
-
 ClearString::ClearString(){
     dictionary.insert ( pair<string,string>("á","a") );
     dictionary.insert ( pair<string,string>("à","a") );
@@ -71,11 +69,18 @@ ClearString::ClearString(){
 
     dictionary.insert ( pair<string,string>("ý","y") );
     dictionary.insert ( pair<string,string>("Ý","Y") );
+    
+    dictionary.insert ( pair<string,string>("¿","?") );
+    dictionary.insert ( pair<string,string>("½","") );
+    dictionary.insert ( pair<string,string>("§","") );
+    dictionary.insert ( pair<string,string>("¡","") );
+    dictionary.insert ( pair<string,string>("½","") );
+    
+    
 
 }
     
-    
-    
+
 string ClearString::clear_string(string in){
     string new_str;
 
@@ -111,6 +116,5 @@ string ClearString::clear_string(string in){
     if (new_str.back() == ' '){
         new_str.pop_back();
     }
-
     return new_str;
 }

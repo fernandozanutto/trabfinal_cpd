@@ -9,9 +9,11 @@ using namespace std;
 class Tag {
 public:
     string tag;
+    string identifier;
     vector<Movie*> movies;
     
     Tag(string _tag);
+    Tag(string _tag, string _id);
     
     string getIdentifier();
     

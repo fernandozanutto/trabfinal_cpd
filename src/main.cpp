@@ -8,6 +8,7 @@
 #include "header/Trie.h"
 #include "header/Tag.h"
 #include "header/Genre.h"
+#include "header/ClearString.h"
 
 using namespace std;
 
@@ -20,11 +21,12 @@ int main() {
     Hash<Movie> hashRatings(5807); // ~27k movies
     Hash<User> hashUsers(27701); // ~138k users
     Hash<Tag> hashTags(90000); // ~490k entries
-    Hash<Genre> hashGenres(5000); // no ideia how many different genres there are
+    Hash<Genre> hashGenres(5000); // TODO: review size, no ideia how many different genres there are
     Trie trieMovies;                 // ~27k movies
+    ClearString cl;
 
     fstream movie_trie;
-    movie_trie.open("movie_clean.csv", ios::in);
+    movie_trie.open("movie.csv", ios::in);
     string temp, name;
 
     getline(movie_trie,temp);
@@ -57,7 +59,7 @@ int main() {
 
         Movie* a = new Movie(movie_id, name, genre);
         hashRatings[movie_id] = a;
-        trieMovies.insert(name, a);
+        trieMovies.insert(cl.clear_string(name), a);
         
         for(int i=0; i < (int) genre.size(); i++){
             if(!hashGenres.search(genre[i])){
@@ -69,7 +71,7 @@ int main() {
     }
 
     fstream rating;
-    rating.open("minirating.csv", ios::in);
+    rating.open("rating.csv", ios::in);
     getline(rating, temp);
 
     while(getline(rating, temp)){
@@ -99,28 +101,29 @@ int main() {
 
 
     fstream tags;
-    tags.open("minitag.csv", ios::in);
+    tags.open("tag.csv", ios::in);
+
     getline(tags, temp);
 
     while(getline(tags, temp)){
 
         stringstream s(temp);
         string word;
+        
         getline(s, word, ',');
-        int userId = stoi(word); // TODO: will this be used?
-
         getline(s, word, ',');
+        
         int movieId = stoi(word);
 
         getline(s, word, '"'); //ignora o primeiro pra poder pegar o nome do filme limpo
         getline(s, word, '"');
         string tag = word;
 
-        if(!hashTags.search(tag)){
-            hashTags[tag] = new Tag(tag);
+        if(!hashTags.search(cl.clear_string(tag))){
+            hashTags[cl.clear_string(tag)] = new Tag(tag, cl.clear_string(tag));
         }
-
-        hashTags[tag]->addMovie(hashRatings[movieId]);
+        //TODO: dont add repeated movies
+        hashTags[cl.clear_string(tag)]->addMovie(hashRatings[movieId]);
     }
 
     // TODO: revisar modo de linha de comando
@@ -138,12 +141,12 @@ int main() {
         stringstream linha_terminal(entrada);
 
         getline(linha_terminal, option, ' ');   
-
+        /////////////////////////////////////////////////////////////////////////////////
         if(option.compare("movie") == 0){
 
             getline(linha_terminal, option);
 
-            vector<Movie*> key = trieMovies.searchPrefix(option);
+            vector<Movie*> key = trieMovies.searchPrefix(cl.clear_string(option));
 
             cout << "Movie Id" << '\t' << "Title"<< '\t' << "Genres" << '\t' << "Rating" << '\t' << "Counting"<< endl;
             cout <<"---------------------------------------------------------------------"<< endl;
@@ -160,7 +163,7 @@ int main() {
                 cout << rate << '\t' << key[i]->num_ratings << endl;
             }
         }
-
+        /////////////////////////////////////////////////////////////////////////////////
         else if (option.compare("user") == 0){
         
             getline(linha_terminal, option);
@@ -178,8 +181,9 @@ int main() {
 
             }
         }
-
+        /////////////////////////////////////////////////////////////////////////////////
         else if (option.substr(0,3).compare("top") == 0){
+            //TODO: make an option to filter movies with at least N numbers of ratings
             int n = stoi(option.substr(3,option.size()-3));
             getline(linha_terminal, option);
             if(hashGenres.search(option)){   
@@ -192,13 +196,13 @@ int main() {
             }
             //ranking dos filmes de um genero
         }
-
+        /////////////////////////////////////////////////////////////////////////////////
         else if(option.compare("tag") == 0){
             //lista os filme com a tag dada
             vector<string> tags;
             getline(linha_terminal, option, '"');
             while(getline(linha_terminal, option, '"')){
-                tags.push_back(option);
+                tags.push_back(cl.clear_string(option));
                 getline(linha_terminal, option, '"');
             }
             
@@ -215,7 +219,7 @@ int main() {
                     }
                 }
             }
-            
+            cout << "size: " << ans.size() << endl;
             if(ans.size() == 0){
                 cout << "Não foram encontrados resultado." << endl;
             } else {
@@ -224,7 +228,7 @@ int main() {
                 }
             }
         }
-        
+        /////////////////////////////////////////////////////////////////////////////////
         else if(option.compare("exit") == 0){
             break;
         }
