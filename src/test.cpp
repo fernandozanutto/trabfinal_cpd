@@ -17,20 +17,20 @@ using namespace std;
 #include <ctime>
 
 int main(){
-    //setlocale(LC_ALL, "en_US.UTF-8");
+
     clock_t begin = clock();
  
     Hash<Movie> hashRatings(5807); // ~27k movies
     Hash<User> hashUsers(27701); // ~138k users
     Hash<Tag> hashTags(90000); // ~490k entries
-    Hash<Genre> hashGenres(5000); // TODO: review size, no ideia how many different genres there are
+    Hash<Genre> hashGenres(5); // 20 genres
     Trie trieMovies;
     ClearString cl;
 
     fstream movie_trie;
     movie_trie.open("movie.csv", ios::in);
     string temp, name;
-
+   
     getline(movie_trie,temp);
     while(getline(movie_trie, temp)){
 
@@ -71,7 +71,7 @@ int main(){
             hashGenres[genre[i]]->addMovie(a);
         }
     }
-
+    
     fstream rating;
     rating.open("rating.csv", ios::in);
     getline(rating, temp);
@@ -106,7 +106,7 @@ int main(){
     tags.open("tag.csv", ios::in);
 
     getline(tags, temp);
-
+    int tagsss= 0;
     while(getline(tags, temp)){
 
         stringstream s(temp);
@@ -120,14 +120,16 @@ int main(){
         getline(s, word, '"'); //ignora o primeiro pra poder pegar o nome do filme limpo
         getline(s, word, '"');
         string tag = word;
-
+        string cleartag = cl.clear_string(tag);
+        
         if(!hashTags.search(cl.clear_string(tag))){
-            hashTags[cl.clear_string(tag)] = new Tag(tag, cl.clear_string(tag));
+            tagsss++;
+            hashTags[cleartag] = new Tag(tag, cleartag);
         }
         
-        hashTags[cl.clear_string(tag)]->addMovie(hashRatings[movieId]);
+        hashTags[cleartag]->addMovie(hashRatings[movieId]);
     }
-
+    
     // TODO: revisar linha de comando e se tudo esta funcionando
     
     cout << "TA TUDO CARREGADO. LETs DALE" << endl;

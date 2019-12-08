@@ -21,7 +21,7 @@ int main() {
     Hash<Movie> hashRatings(5807); // ~27k movies
     Hash<User> hashUsers(27701); // ~138k users
     Hash<Tag> hashTags(90000); // ~490k entries
-    Hash<Genre> hashGenres(5000); // TODO: review size, no ideia how many different genres there are
+    Hash<Genre> hashGenres(5); // 20 genres
     Trie trieMovies;
     ClearString cl;
 
