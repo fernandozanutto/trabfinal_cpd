@@ -14,9 +14,8 @@ using namespace std;
 
 
 int main() {
-
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
+    setlocale (LC_ALL, "");
+    clock_t begin = clock();
 
     Hash<Movie> hashRatings(5807); // ~27k movies
     Hash<User> hashUsers(27701); // ~138k users
@@ -24,13 +23,22 @@ int main() {
     Hash<Genre> hashGenres(5); // 20 genres
     Trie trieMovies;
     ClearString cl;
-
-    fstream movie_trie;
-    movie_trie.open("movie.csv", ios::in);
     string temp, name;
-
-    getline(movie_trie,temp);
-    while(getline(movie_trie, temp)){
+    
+    string help_message = "\nComandos: \
+    \nmovie <prefix> - Procura por todos os filmes com o prefixo inserido \
+    \ntop<N> <genre> [min] - procura pelos filmes melhores avaliados de um dado gênero, podendo filtrar apenas os que tem um mínimo de notas recebidas \
+    \ntag \"<tag>\" - procura pelos filmes que tenham as tags fornecidas (escrever as tags entre aspas) \
+    \nuser <ID> - procura pelos filmes que o usuario avaliou\
+    \nhelp - exibe esta mensagem";
+    
+    
+    cout << "Carregando movie.csv" << endl;
+    fstream movie_file;
+    movie_file.open("movie.csv", ios::in);
+    
+    getline(movie_file,temp);
+    while(getline(movie_file, temp)){
 
         stringstream s(temp);
         string word;
@@ -69,12 +77,14 @@ int main() {
             hashGenres[genre[i]]->addMovie(a);
         }
     }
+    movie_file.close();
+    
+    cout << "Carregando rating.csv" << endl;
+    fstream rating_file;
+    rating_file.open("rating.csv", ios::in);
+    getline(rating_file, temp);
 
-    fstream rating;
-    rating.open("rating.csv", ios::in);
-    getline(rating, temp);
-
-    while(getline(rating, temp)){
+    while(getline(rating_file, temp)){
 
         stringstream s(temp);
         string word;
@@ -98,14 +108,14 @@ int main() {
 
         hashUsers[userId]->addMovie(m, r);
     }
+    rating_file.close();
 
+    cout << "Carregando tag.csv" << endl;
+    fstream tag_file;
+    tag_file.open("tag.csv", ios::in);
+    getline(tag_file, temp);
 
-    fstream tags;
-    tags.open("tag.csv", ios::in);
-
-    getline(tags, temp);
-
-    while(getline(tags, temp)){
+    while(getline(tag_file, temp)){
 
         stringstream s(temp);
         string word;
@@ -125,11 +135,17 @@ int main() {
         
         hashTags[cl.clear_string(tag)]->addMovie(hashRatings[movieId]);
     }
+    tag_file.close();
 
     // TODO: revisar linha de comando e se tudo esta funcionando
     
-    cout << "TA TUDO CARREGADO. LETs DALE" << endl;
-
+    clock_t end = clock();
+    double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
+    
+    cout << "Tempo para iniciar programa: " << elapsed_secs << " segundos" << endl;
+    
+    
+    cout << help_message << endl;
     while(true){
         string entrada;
         string option; // movie, user, top or tag
@@ -147,46 +163,96 @@ int main() {
 
             vector<Movie*> key = trieMovies.searchPrefix(cl.clear_string(option));
 
-            cout << "Movie Id" << '\t' << "Title"<< '\t' << "Genres" << '\t' << "Rating" << '\t' << "Counting"<< endl;
-            cout <<"---------------------------------------------------------------------"<< endl;
+            cout << "ID" << '\t' << "Title" << "\t\t\t\t\t\t\t" << "Genres" << "\t\t\t\t\t\t\t\t\t" << "Av. Rating" << '\t' << "Rating Count"<< endl;
+            cout << "---------------------------------------------------------------------------------------------------------------------------------------------------------------------" << endl;
 
             for(int i=0; i < (int)key.size(); i++){
-
-                cout << key[i]->id <<'\t' << key[i]->name << '\t';
-
-                for(int j=0; j < (int)key[i]->genres.size(); j++){
-                    cout << key[i]->genres[j] << "|";
+                ostringstream buffer;
+                
+                buffer << key[i]->id << "\t";
+                buffer << (key[i]->name.size() > 48 ? (key[i]->name.substr(0,45) + "...") : key[i]->name) << "\t";
+                
+                if(key[i]->name.size() < 48){
+                    int m = ceil(6 - key[i]->name.size()/8.0);
+                    for(int i=0; i < m; i++){
+                        buffer << "\t";
+                    }
                 }
-
+                
+                int j;
+                int temp = 0;
+                
+                for(j=0; j < (int)key[i]->genres.size()-1; j++){
+                    buffer << key[i]->genres[j] << "|";
+                    temp += key[i]->genres[j].size()+1;
+                }
+                buffer << key[i]->genres[j] << "\t";
+                temp += key[i]->genres[j].size();
+                
+                if(temp < 64){
+                    for(int i=0; i < ceil((64-temp)/8.0); i++)
+                        buffer << "\t";
+                }
+                
                 int rate = key[i]->num_ratings != 0 ? (key[i]->sum_ratings)/(key[i]->num_ratings) : 0;
-                cout << rate << '\t' << key[i]->num_ratings << endl;
+                buffer << rate << "\t\t" << key[i]->num_ratings << endl;
+                
+                
+                cout << buffer.str() << endl;
             }
+
         }
         /////////////////////////////////////////////////////////////////////////////////
         else if (option.compare("user") == 0){
         
             getline(linha_terminal, option);
-            cout << "Title"<<'\t'<< "User Rating"<< '\t'<< "Global Rating"<<'\t'<< "Counting"<< endl;
-            cout <<"---------------------------------------------------------------------"<< endl;
+            cout << "Title" << "\t\t\t\t\t\t\t" << "User Rating" << "\t" << "Av. Global Rating" << '\t' << "Rating Count"<< endl;
+            cout << "------------------------------------------------------------------------------------------------------------" << endl;
             int user_id = stoi(option);
-            vector<pair<Movie*, double>> movies = hashUsers[user_id]->ratings;
-            for(int i=0; i < (int) movies.size(); i++){
             
-                cout << movies[i].first->name << '\t';
-                cout << movies[i].second <<'\t';
+            if(hashUsers.search(user_id)){
+                vector<pair<Movie*, double>> movies = hashUsers[user_id]->ratings;
+                for(int i=0; i < (int) movies.size(); i++){
+                    ostringstream buffer;
+                    
+                    buffer << (movies[i].first->name.size() > 48 ? (movies[i].first->name.substr(0,45) + "...") : movies[i].first->name) << "\t";
+                    
+                    if(movies[i].first->name.size() < 48){
+                        int m = ceil(6 - movies[i].first->name.size()/8.0);
+                        for(int i=0; i < m; i++){
+                            buffer << "\t";
+                        }
+                    }
+                    
+                    
+                    buffer << movies[i].second << "\t\t";
+                    
+                    double rate = movies[i].first->num_ratings != 0 ? (movies[i].first->sum_ratings)/(movies[i].first->num_ratings) : 0;
+                    buffer << rate << "\t\t\t" << movies[i].first->num_ratings << endl;
                 
-                int rate = movies[i].first->num_ratings != 0 ? (movies[i].first->sum_ratings)/(movies[i].first->num_ratings) : 0;
-                cout << rate << '\t' << movies[i].first->num_ratings << endl;
-
+                    cout << buffer.str();
+                }
+            } else {
+                cout << "Usuario nao encontrado." << endl;
             }
         }
         /////////////////////////////////////////////////////////////////////////////////
         else if (option.substr(0,3).compare("top") == 0){
             //TODO: make an option to filter movies with at least N numbers of ratings
+            
             int n = stoi(option.substr(3,option.size()-3));
-            getline(linha_terminal, option);
-            if(hashGenres.search(option)){   
-                for(auto a: hashGenres[option]->getTop(n)){
+            int min = 0;
+            getline(linha_terminal, option, ' ');
+            string genre = option;
+
+            getline(linha_terminal, option, ' ');
+
+            if(option != genre){
+                min = stoi(option);
+            }
+            
+            if(hashGenres.search(genre)){
+                for(auto a: hashGenres[genre]->getTop(n, min)){
                     cout << a->toString() << endl;
                 }
                 
@@ -198,6 +264,7 @@ int main() {
         /////////////////////////////////////////////////////////////////////////////////
         else if(option.compare("tag") == 0){
             //lista os filme com a tag dada
+            // TODO: na hora de exibir, ordenar por ordem alfabetica
             vector<string> tags;
             getline(linha_terminal, option, '"');
             while(getline(linha_terminal, option, '"')){
@@ -218,7 +285,7 @@ int main() {
                     }
                 }
             }
-            cout << "size: " << ans.size() << endl;
+            cout << "Filmes encontrados: " << ans.size() << endl;
             if(ans.size() == 0){
                 cout << "Não foram encontrados resultado." << endl;
             } else {
@@ -230,6 +297,8 @@ int main() {
         /////////////////////////////////////////////////////////////////////////////////
         else if(option.compare("exit") == 0){
             break;
+        } else if(option.compare("help") == 0){
+            cout << help_message << endl;
         }
     }
 
