@@ -325,6 +325,26 @@ int main() {
             if(ans.size() == 0){
                 cout << "Não foram encontrados resultado." << endl;
             } else {
+            
+            
+                int i,j;
+                for(i=1; i < (int) ans.size(); i++){
+                    for(j=0; j < i; j++){
+                        if(ans[i]->name.compare(ans[j]->name) < 0){
+                            break;
+                        }
+                    }
+                    
+                    int x = i;
+                    while(x > j){
+                        Movie *temp = ans[x];
+                        ans[x] = ans[x-1];
+                        ans[x-1] = temp;
+                        --x;
+                    }
+                }
+            
+            
                 for(int i=0; i < (int) ans.size(); i++){
                     ostringstream buffer;
                     Movie *movie = ans[i];

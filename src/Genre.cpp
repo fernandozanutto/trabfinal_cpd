@@ -42,7 +42,7 @@ double avRating(Movie *m){
 
 void Genre::sortMovies(){
     // sort movies based on their average rating
-    // insertion sort 'cause laziness is real
+    // insertion sort 'cause laziness is real (actually the reason is because there is no need to use a better algo, not because we're lazy)
     int i,j;
     for(i=1; i < (int) movies.size(); i++){
         for(j=0; j < i; j++){

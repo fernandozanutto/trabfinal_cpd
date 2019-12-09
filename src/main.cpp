@@ -290,13 +290,11 @@ int main() {
             } else {
                 cout << "Nenhum gênero encontrado com este nome" << endl;
             }
-            //ranking dos filmes de um genero
         }
         /////////////////////////////////////////////////////////////////////////////////
         else if(option.substr(0,3).compare("tag") == 0){
             cout << "Title" << "\t\t\t\t\t\t\t" << "Genres" << "\t\t\t\t\t\t\t\t\t" << "Av. Rating" << "\t" << "Rating Count"<< endl;
             cout << "------------------------------------------------------------------------------------------------------------------------------------------------------------" << endl;
-            // TODO: na hora de exibir, ordenar por ordem alfabetica
             vector<string> tags;
             getline(linha_terminal, option, '"');
             
@@ -322,6 +320,26 @@ int main() {
             if(ans.size() == 0){
                 cout << "Não foram encontrados resultado." << endl;
             } else {
+            
+            
+                int i,j;
+                for(i=1; i < (int) ans.size(); i++){
+                    for(j=0; j < i; j++){
+                        if(ans[i]->name.compare(ans[j]->name) < 0){
+                            break;
+                        }
+                    }
+                    
+                    int x = i;
+                    while(x > j){
+                        Movie *temp = ans[x];
+                        ans[x] = ans[x-1];
+                        ans[x-1] = temp;
+                        --x;
+                    }
+                }
+            
+            
                 for(int i=0; i < (int) ans.size(); i++){
                     ostringstream buffer;
                     Movie *movie = ans[i];
