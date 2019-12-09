@@ -19,6 +19,6 @@ public:
     string getIdentifier();
     
     void addMovie(Movie* movie);
-    vector<Movie*> getTop(int n);
+    vector<Movie*> getTop(int n, int min);
 };
 

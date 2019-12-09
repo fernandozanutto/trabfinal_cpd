@@ -28,7 +28,7 @@ Movie::Movie(int _id, string _name, vector<string> _genre){
 const string Movie::toString() const {
     ostringstream buffer;
 
-    buffer << "ID: " << id << " Nome: " << name <<  " Num ratings: " << num_ratings << " Soma: " << sum_ratings << endl;
+    buffer << "ID: " << id << "\tNome: " << name <<  "\tMedia: " << sum_ratings/num_ratings << "\tNº avaliacoes: " << num_ratings << endl;
 
     return buffer.str();
 }
