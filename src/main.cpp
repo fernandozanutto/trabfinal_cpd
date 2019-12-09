@@ -2,6 +2,7 @@
 #include <fstream>
 #include <sstream>
 #include <string>
+#include <cmath>
 #include "header/Hash.h"
 #include "header/User.h"
 #include "header/Movie.h"
@@ -14,7 +15,6 @@ using namespace std;
 
 
 int main() {
-    setlocale (LC_ALL, "");
     clock_t begin = clock();
 
     Hash<Movie> hashRatings(5807); // ~27k movies
@@ -27,7 +27,7 @@ int main() {
     
     string help_message = "\nComandos: \
     \nmovie <prefix> - Procura por todos os filmes com o prefixo inserido \
-    \ntop<N> <genre> [min] - procura pelos filmes melhores avaliados de um dado gênero, podendo filtrar apenas os que tem um mínimo de notas recebidas \
+    \ntop<N> <genre> [min] - procura pelos filmes melhores avaliados de um dado genero, podendo filtrar apenas os que tem um mínimo de notas recebidas \
     \ntag \"<tag>\" - procura pelos filmes que tenham as tags fornecidas (escrever as tags entre aspas) \
     \nuser <ID> - procura pelos filmes que o usuario avaliou\
     \nhelp - exibe esta mensagem";
@@ -288,7 +288,7 @@ int main() {
                 }
                 
             } else {
-                cout << "Nenhum gênero encontrado com este nome" << endl;
+                cout << "Nenhum genero encontrado com este nome" << endl;
             }
         }
         /////////////////////////////////////////////////////////////////////////////////
@@ -318,7 +318,7 @@ int main() {
             }
             
             if(ans.size() == 0){
-                cout << "Não foram encontrados resultado." << endl;
+                cout << "Nao foram encontrados resultados." << endl;
             } else {
             
             

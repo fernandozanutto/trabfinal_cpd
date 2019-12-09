@@ -4,7 +4,7 @@ all: moviesrating.exe
 teste: teste.exe
 
 moviesrating.exe: main.o user.o movie.o trie.o tag.o genre.o clear.o
-	g++ -Wall -o moviesrating.exe movie.o user.o trie.o tag.o genre.o clear.o main.o -g -std=c++17
+	g++ -Wall -o moviesrating.exe movie.o user.o trie.o tag.o genre.o clear.o main.o -g -O3 -std=c++17
 
 teste.exe: test.o user.o movie.o trie.o tag.o genre.o clear.o
 	g++ -Wall -o teste.exe movie.o user.o trie.o tag.o genre.o clear.o test.o -g -O3 -std=c++17
