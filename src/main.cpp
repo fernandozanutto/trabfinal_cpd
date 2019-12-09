@@ -224,7 +224,6 @@ int main() {
                         }
                     }
                     
-                    
                     buffer << movies[i].second << "\t\t";
                     
                     double rate = movies[i].first->num_ratings != 0 ? (movies[i].first->sum_ratings)/(movies[i].first->num_ratings) : 0;
@@ -238,7 +237,6 @@ int main() {
         }
         /////////////////////////////////////////////////////////////////////////////////
         else if (option.size() > 3 && option.substr(0,3).compare("top") == 0){
-            //TODO: make an option to filter movies with at least N numbers of ratings
             cout << "Title" << "\t\t\t\t\t\t\t" << "Genres" << "\t\t\t\t\t\t\t\t\t" << "Av. Rating" << "\t" << "Rating Count"<< endl;
             cout << "------------------------------------------------------------------------------------------------------------------------------------------------------------" << endl;
             int n = stoi(option.substr(3,option.size()-3));
@@ -295,11 +293,13 @@ int main() {
             //ranking dos filmes de um genero
         }
         /////////////////////////////////////////////////////////////////////////////////
-        else if(option.compare("tag") == 0){
-            //lista os filme com a tag dada
+        else if(option.substr(0,3).compare("tag") == 0){
+            cout << "Title" << "\t\t\t\t\t\t\t" << "Genres" << "\t\t\t\t\t\t\t\t\t" << "Av. Rating" << "\t" << "Rating Count"<< endl;
+            cout << "------------------------------------------------------------------------------------------------------------------------------------------------------------" << endl;
             // TODO: na hora de exibir, ordenar por ordem alfabetica
             vector<string> tags;
             getline(linha_terminal, option, '"');
+            
             while(getline(linha_terminal, option, '"')){
                 tags.push_back(cl.clear_string(option));
                 getline(linha_terminal, option, '"');
@@ -318,12 +318,43 @@ int main() {
                     }
                 }
             }
-            cout << "Filmes encontrados: " << ans.size() << endl;
+            
             if(ans.size() == 0){
                 cout << "Não foram encontrados resultado." << endl;
             } else {
                 for(int i=0; i < (int) ans.size(); i++){
-                    cout << ans[i]->toString() << endl;
+                    ostringstream buffer;
+                    Movie *movie = ans[i];
+                    
+                    buffer << (movie->name.size() > 48 ? (movie->name.substr(0,45) + "...") : movie->name) << "\t";
+                
+                    if(movie->name.size() < 48){
+                        int m = ceil(6 - movie->name.size()/8.0);
+                        for(int i=0; i < m; i++){
+                            buffer << "\t";
+                        }
+                    }
+                    
+                    int j;
+                    int temp = 0;
+                    
+                    for(j=0; j < (int)movie->genres.size()-1; j++){
+                        buffer << movie->genres[j] << "|";
+                        temp += movie->genres[j].size()+1;
+                    }
+                    
+                    buffer << movie->genres[j] << "\t";
+                    temp += movie->genres[j].size();
+                    
+                    if(temp < 64){
+                        for(int i=0; i < ceil((64-temp)/8.0); i++)
+                            buffer << "\t";
+                    }
+                    
+                    double rate = movie->num_ratings != 0 ? (movie->sum_ratings)/(movie->num_ratings) : 0;
+                    buffer << rate << "\t\t" << movie->num_ratings << endl;
+                    
+                    cout << buffer.str();
                 }
             }
         }
