@@ -12,9 +12,11 @@ private:
     void sortMovies();
 public:
     string genre;
+    string id;
     vector<Movie*> movies;
     
     Genre(string _genre);
+    Genre(string _genre, string _id);
     
     string getIdentifier();
     

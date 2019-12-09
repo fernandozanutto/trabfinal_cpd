@@ -2,6 +2,13 @@
 
 Genre::Genre(string _genre){
     genre = _genre;
+    id = _genre;
+    isSorted = false;
+}
+
+Genre::Genre(string _genre, string _id){
+    genre = _genre;
+    id = _id;
     isSorted = false;
 }
 
@@ -10,7 +17,7 @@ void Genre::addMovie(Movie* movie){
 }
 
 string Genre::getIdentifier(){
-    return genre;
+    return id;
 }
 
 vector<Movie*> Genre::getTop(int n, int min){
@@ -21,7 +28,7 @@ vector<Movie*> Genre::getTop(int n, int min){
         isSorted = true;
     }
     
-    for(int i=0; (int)ans.size() < n && i < (int)movies.size(); i++){
+    for(int i=0; ((int)ans.size() < n || n == 0) && i < (int)movies.size(); i++){
         if(min == 0 || movies[i]->num_ratings >= min)
             ans.push_back(movies[i]);
     }

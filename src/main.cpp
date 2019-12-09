@@ -71,10 +71,10 @@ int main() {
         
         for(int i=0; i < (int) genre.size(); i++){
             if(!hashGenres.search(genre[i])){
-                hashGenres[genre[i]] = new Genre(genre[i]);
+                hashGenres[cl.clear_string(genre[i])] = new Genre(genre[i], cl.clear_string(genre[i]));
             }
             
-            hashGenres[genre[i]]->addMovie(a);
+            hashGenres[cl.clear_string(genre[i])]->addMovie(a);
         }
     }
     movie_file.close();
@@ -237,9 +237,10 @@ int main() {
             }
         }
         /////////////////////////////////////////////////////////////////////////////////
-        else if (option.substr(0,3).compare("top") == 0){
+        else if (option.size() > 3 && option.substr(0,3).compare("top") == 0){
             //TODO: make an option to filter movies with at least N numbers of ratings
-            
+            cout << "Title" << "\t\t\t\t\t\t\t" << "Genres" << "\t\t\t\t\t\t\t\t\t" << "Av. Rating" << "\t" << "Rating Count"<< endl;
+            cout << "------------------------------------------------------------------------------------------------------------------------------------------------------------" << endl;
             int n = stoi(option.substr(3,option.size()-3));
             int min = 0;
             getline(linha_terminal, option, ' ');
@@ -251,9 +252,41 @@ int main() {
                 min = stoi(option);
             }
             
+            genre = cl.clear_string(genre);
             if(hashGenres.search(genre)){
-                for(auto a: hashGenres[genre]->getTop(n, min)){
-                    cout << a->toString() << endl;
+            
+                for(Movie* movie: hashGenres[genre]->getTop(n, min)){
+                    ostringstream buffer;
+                    
+                    buffer << (movie->name.size() > 48 ? (movie->name.substr(0,45) + "...") : movie->name) << "\t";
+                
+                    if(movie->name.size() < 48){
+                        int m = ceil(6 - movie->name.size()/8.0);
+                        for(int i=0; i < m; i++){
+                            buffer << "\t";
+                        }
+                    }
+                    
+                    int j;
+                    int temp = 0;
+                    
+                    for(j=0; j < (int)movie->genres.size()-1; j++){
+                        buffer << movie->genres[j] << "|";
+                        temp += movie->genres[j].size()+1;
+                    }
+                    
+                    buffer << movie->genres[j] << "\t";
+                    temp += movie->genres[j].size();
+                    
+                    if(temp < 64){
+                        for(int i=0; i < ceil((64-temp)/8.0); i++)
+                            buffer << "\t";
+                    }
+                    
+                    double rate = movie->num_ratings != 0 ? (movie->sum_ratings)/(movie->num_ratings) : 0;
+                    buffer << rate << "\t\t" << movie->num_ratings << endl;
+                    
+                    cout << buffer.str();
                 }
                 
             } else {
