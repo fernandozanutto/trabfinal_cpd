@@ -195,7 +195,7 @@ int main() {
                 }
                 
                 int rate = key[i]->num_ratings != 0 ? (key[i]->sum_ratings)/(key[i]->num_ratings) : 0;
-                buffer << rate << "\t\t" << key[i]->num_ratings << endl;
+                buffer << rate << "\t\t" << key[i]->num_ratings;
                 
                 
                 cout << buffer.str() << endl;
@@ -212,13 +212,32 @@ int main() {
             
             if(hashUsers.search(user_id)){
                 vector<pair<Movie*, double>> movies = hashUsers[user_id]->ratings;
+                
+               
+                int i,j;
+                for(i=1; i < (int) movies.size(); i++){
+                    for(j=0; j < i; j++){
+                        if(movies[i].first->name.compare(movies[j].first->name) < 0){
+                            break;
+                        }
+                    }
+                    
+                    int x = i;
+                    while(x > j){
+                        pair<Movie*, double> temp = movies[x];
+                        movies[x] = movies[x-1];
+                        movies[x-1] = temp;
+                        --x;
+                    }
+                }
+                
                 for(int i=0; i < (int) movies.size(); i++){
                     ostringstream buffer;
                     
-                    buffer << (movies[i].first->name.size() > 48 ? (movies[i].first->name.substr(0,45) + "...") : movies[i].first->name) << "\t";
+                    buffer << (movies[i].first->name.size() > 48 ? (movies[i].first->name.substr(0,46) + "...") : movies[i].first->name) << "\t";
                     
                     if(movies[i].first->name.size() < 48){
-                        int m = ceil(6 - movies[i].first->name.size()/8.0);
+                        int m = ceil((48 - movies[i].first->name.size())/8.0);
                         for(int i=0; i < m; i++){
                             buffer << "\t";
                         }
