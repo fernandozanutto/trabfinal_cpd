@@ -1,20 +1,20 @@
+#include <istream>
+#include <ostream>
 #include <iostream>
 #include <fstream>
 #include <sstream>
 #include <string>
 #include <cmath>
-#include "header/Hash.h"
-#include "header/User.h"
-#include "header/Movie.h"
-#include "header/Trie.h"
-#include "header/Tag.h"
-#include "header/Genre.h"
-#include "header/ClearString.h"
+#include <QApplication>
+#include "Movie.cpp"
+#include "mainwindow.h"
 
 using namespace std;
 
+int main(int argc, char *argv[]) {
 
-int main() {
+    const int MAX_LENGTH = 500;
+    char* line = new char[MAX_LENGTH];
     clock_t begin = clock();
 
     Hash<Movie> hashRatings(5807); // ~27k movies
@@ -23,27 +23,30 @@ int main() {
     Hash<Genre> hashGenres(5); // 20 genres
     Trie trieMovies;
     ClearString cl;
-    string temp, name;
+    string temp, name, word;
+    int movieId, userId;
+    double r;
     
     string help_message = "\nComandos: \
     \nmovie <prefix> - Procura por todos os filmes com o prefixo inserido \
-    \ntop<N> <genre> [min] - procura pelos filmes melhores avaliados de um dado genero, podendo filtrar apenas os que tem um mínimo de notas recebidas \
+    \ntop<N> <genre> [min] - procura pelos filmes melhores avaliados de um dado genero, podendo filtrar apenas os que tem um mÃ­nimo de notas recebidas \
     \ntag \"<tag>\" - procura pelos filmes que tenham as tags fornecidas (escrever as tags entre aspas) \
     \nuser <ID> - procura pelos filmes que o usuario avaliou\
     \nhelp - exibe esta mensagem";
     
-    
     cout << "Carregando movie.csv" << endl;
-    fstream movie_file;
-    movie_file.open("movie.csv", ios::in);
-    
-    getline(movie_file,temp);
-    while(getline(movie_file, temp)){
 
-        stringstream s(temp);
-        string word;
+    filebuf fb;
+    fb.open ("movie.csv",ios::in);
+    istream movieStream(&fb);
+
+    movieStream.getline(line, MAX_LENGTH);
+    while (movieStream.getline(line, MAX_LENGTH) && strlen(line) > 0) {
+
+        stringstream s(line);
+
         getline(s, word, ',');
-        int movie_id = stoi(word);
+        movieId = stoi(word);
 
         getline(s, word, '"'); //ignora o primeiro pra poder pegar o nome do filme limpo
         getline(s, word, '"');
@@ -65,41 +68,40 @@ int main() {
 
         genre.push_back(word);
 
-        Movie* a = new Movie(movie_id, name, genre);
-        hashRatings[movie_id] = a;
+        Movie* a = new Movie(movieId, name, genre);
+        hashRatings[movieId] = a;
         trieMovies.insert(cl.clear_string(name), a);
         
         for(int i=0; i < (int) genre.size(); i++){
-            if(!hashGenres.search(genre[i])){
+            if(!hashGenres.search(cl.clear_string(genre[i]))){
                 hashGenres[cl.clear_string(genre[i])] = new Genre(genre[i], cl.clear_string(genre[i]));
             }
             
             hashGenres[cl.clear_string(genre[i])]->addMovie(a);
         }
     }
-    movie_file.close();
+
     
     cout << "Carregando rating.csv" << endl;
-    fstream rating_file;
-    rating_file.open("rating.csv", ios::in);
-    getline(rating_file, temp);
+    fb.close();
+    fb.open ("rating.csv",ios::in);
+    istream ratingStream(&fb);
 
-    while(getline(rating_file, temp)){
-
-        stringstream s(temp);
-        string word;
+    ratingStream.getline(line, MAX_LENGTH);
+    while (ratingStream.getline(line, MAX_LENGTH)) {
+        stringstream s(line);
 
         getline(s, word, ',');
 
-        int userId = stoi(word);
+        userId = stoi(word);
         getline(s, word, ',');
-        int movieId = stoi(word);
+        movieId = stoi(word);
         getline(s, word, ',');
-        double r = stod(word);
+        r = stod(word);
 
         Movie* m = hashRatings[movieId];
 
-        m->num_ratings += 1;
+        ++m->num_ratings;
         m->sum_ratings += r;
 
         if(!hashUsers.search(userId)){
@@ -108,22 +110,21 @@ int main() {
 
         hashUsers[userId]->addMovie(m, r);
     }
-    rating_file.close();
+
 
     cout << "Carregando tag.csv" << endl;
-    fstream tag_file;
-    tag_file.open("tag.csv", ios::in);
-    getline(tag_file, temp);
+    fb.close();
+    fb.open ("tag.csv", ios::in);
+    istream tagStream(&fb);
+    tagStream.getline(line, MAX_LENGTH);
+    while (tagStream.getline(line, MAX_LENGTH)) {
 
-    while(getline(tag_file, temp)){
+        stringstream s(line);
 
-        stringstream s(temp);
-        string word;
-        
         getline(s, word, ',');
         getline(s, word, ',');
         
-        int movieId = stoi(word);
+        movieId = stoi(word);
 
         getline(s, word, '"'); //ignora o primeiro pra poder pegar o nome do filme limpo
         getline(s, word, '"');
@@ -135,7 +136,6 @@ int main() {
         
         hashTags[cl.clear_string(tag)]->addMovie(hashRatings[movieId]);
     }
-    tag_file.close();
 
     // TODO: revisar linha de comando e se tudo esta funcionando
     
@@ -144,7 +144,7 @@ int main() {
     
     cout << "Tempo para iniciar programa: " << elapsed_secs << " segundos" << endl;
     
-    
+    /*
     cout << help_message << endl;
     while(true){
         string entrada;
@@ -383,8 +383,14 @@ int main() {
             cout << help_message << endl;
         }
     }
+    */
 
-    return 0;
+    QApplication a(argc, argv);
+    MainWindow w;
+
+    w.load(&hashRatings, &hashUsers, &hashTags, &hashGenres, &trieMovies, &cl);
+    w.show();
+
+    return a.exec();
 }
-
 

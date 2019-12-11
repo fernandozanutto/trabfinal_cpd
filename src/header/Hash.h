@@ -1,6 +1,8 @@
+#pragma once
 #include <vector>
 #include <iostream>
 #include <string>
+#include "Movie.h"
 
 #define PRIME 37
 
@@ -26,6 +28,3 @@ public:
     K* &operator[](int index);
     K* &operator[](string index);
 };
-
-
-#include "../Hash.cpp"
