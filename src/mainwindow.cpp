@@ -44,6 +44,7 @@ void MainWindow::load(Hash<Movie> *hashRatings, Hash<User> *hashUsers, Hash<Tag>
 
 void MainWindow::on_pushButton_clicked(){
     ui->tableWidget->model()->removeRows(0, ui->tableWidget->model()->rowCount());
+    ui->tableWidget->model()->removeColumns(0, ui->tableWidget->model()->columnCount());
 
     if(ui->radioButton->isChecked())
         tag();
@@ -53,8 +54,6 @@ void MainWindow::on_pushButton_clicked(){
         movie();
     else if(ui->radioButton_4->isChecked())
         genre();
-
-    ui->tableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
 }
 
 void MainWindow::movie(){
@@ -90,6 +89,9 @@ void MainWindow::movie(){
         ui->tableWidget->setItem(ui->tableWidget->rowCount()-1, 2, new QTableWidgetItem(genres));
         ui->tableWidget->setItem(ui->tableWidget->rowCount()-1, 3, new QTableWidgetItem(avrating));
         ui->tableWidget->setItem(ui->tableWidget->rowCount()-1, 4, new TableNumberItem(counting));
+
+        cout << movies[i]->num_ratings << endl;
+        cout << movies[i]->toString() << endl;
     }
 }
 
@@ -116,9 +118,12 @@ void MainWindow::user(){
 
             ui->tableWidget->insertRow(ui->tableWidget->rowCount());
             ui->tableWidget->setItem(ui->tableWidget->rowCount()-1, 0, new QTableWidgetItem(name));
-            ui->tableWidget->setItem(ui->tableWidget->rowCount()-1, 1, new TableNumberItem(userrating));
+            ui->tableWidget->setItem(ui->tableWidget->rowCount()-1, 1, new QTableWidgetItem(userrating));
             ui->tableWidget->setItem(ui->tableWidget->rowCount()-1, 2, new QTableWidgetItem(avrating));
             ui->tableWidget->setItem(ui->tableWidget->rowCount()-1, 3, new TableNumberItem(counting));
+
+            cout << movie->num_ratings << endl;
+            cout << movie->toString() << endl;
         }
     } else {
         cout << "not found" << endl;
