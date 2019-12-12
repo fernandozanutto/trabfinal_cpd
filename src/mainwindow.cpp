@@ -3,6 +3,23 @@
 #include <iostream>
 using namespace std;
 
+class TableNumberItem : public QTableWidgetItem
+{
+public:
+    TableNumberItem(const QString txt = QString("0"))
+        :QTableWidgetItem(txt)
+    {
+    }
+
+    bool operator < (const QTableWidgetItem &other) const
+    {
+        QString str1 = text();
+        QString str2 = other.text();
+
+        return str1.toDouble() < str2.toDouble();
+    }
+};
+
 MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWindow){
     ui->setupUi(this);
 
@@ -68,11 +85,11 @@ void MainWindow::movie(){
         }
         genres += QString::fromStdString(movies[i]->genres[j]);
 
-        ui->tableWidget->setItem(ui->tableWidget->rowCount()-1, 0, new QTableWidgetItem(id));
+        ui->tableWidget->setItem(ui->tableWidget->rowCount()-1, 0, new TableNumberItem(id));
         ui->tableWidget->setItem(ui->tableWidget->rowCount()-1, 1, new QTableWidgetItem(name));
         ui->tableWidget->setItem(ui->tableWidget->rowCount()-1, 2, new QTableWidgetItem(genres));
         ui->tableWidget->setItem(ui->tableWidget->rowCount()-1, 3, new QTableWidgetItem(avrating));
-        ui->tableWidget->setItem(ui->tableWidget->rowCount()-1, 4, new QTableWidgetItem(counting));
+        ui->tableWidget->setItem(ui->tableWidget->rowCount()-1, 4, new TableNumberItem(counting));
     }
 }
 
@@ -99,9 +116,9 @@ void MainWindow::user(){
 
             ui->tableWidget->insertRow(ui->tableWidget->rowCount());
             ui->tableWidget->setItem(ui->tableWidget->rowCount()-1, 0, new QTableWidgetItem(name));
-            ui->tableWidget->setItem(ui->tableWidget->rowCount()-1, 1, new QTableWidgetItem(userrating));
+            ui->tableWidget->setItem(ui->tableWidget->rowCount()-1, 1, new TableNumberItem(userrating));
             ui->tableWidget->setItem(ui->tableWidget->rowCount()-1, 2, new QTableWidgetItem(avrating));
-            ui->tableWidget->setItem(ui->tableWidget->rowCount()-1, 3, new QTableWidgetItem(counting));
+            ui->tableWidget->setItem(ui->tableWidget->rowCount()-1, 3, new TableNumberItem(counting));
         }
     } else {
         cout << "not found" << endl;
@@ -127,7 +144,7 @@ void MainWindow::genre(){
     if(hashGenres->search(genre)){
         vector<Movie*> movies = (*hashGenres)[genre]->getTop(top, min);
 
-        for(int i=0; i < (int) movies.size(); i++){
+        for(int i=0; i < int(movies.size()); i++){
             Movie *movie = movies[i];
 
             QString name = QString::fromStdString(movie->name);
@@ -136,7 +153,7 @@ void MainWindow::genre(){
             QString counting = QString::fromStdString(to_string(movie->num_ratings));
 
             int j;
-            for(j=0; j < movies[i]->genres.size() - 1; j++){
+            for(j=0; j < int(movies[i]->genres.size()) - 1; j++){
                 genres += QString::fromStdString(movies[i]->genres[j] + "|");
             }
             genres += QString::fromStdString(movies[i]->genres[j]);
@@ -145,7 +162,7 @@ void MainWindow::genre(){
             ui->tableWidget->setItem(ui->tableWidget->rowCount()-1, 0, new QTableWidgetItem(name));
             ui->tableWidget->setItem(ui->tableWidget->rowCount()-1, 1, new QTableWidgetItem(genres));
             ui->tableWidget->setItem(ui->tableWidget->rowCount()-1, 2, new QTableWidgetItem(avrating));
-            ui->tableWidget->setItem(ui->tableWidget->rowCount()-1, 3, new QTableWidgetItem(counting));
+            ui->tableWidget->setItem(ui->tableWidget->rowCount()-1, 3, new TableNumberItem(counting));
 
             cout << movies[i]->num_ratings << endl;
             cout << movies[i]->toString() << endl;
@@ -211,7 +228,10 @@ void MainWindow::tag(){
             ui->tableWidget->setItem(ui->tableWidget->rowCount()-1, 0, new QTableWidgetItem(name));
             ui->tableWidget->setItem(ui->tableWidget->rowCount()-1, 1, new QTableWidgetItem(genres));
             ui->tableWidget->setItem(ui->tableWidget->rowCount()-1, 2, new QTableWidgetItem(avrating));
-            ui->tableWidget->setItem(ui->tableWidget->rowCount()-1, 3, new QTableWidgetItem(counting));
+            ui->tableWidget->setItem(ui->tableWidget->rowCount()-1, 3, new TableNumberItem(counting));
+
+            cout << movie->num_ratings << endl;
+            cout << movie->toString() << endl;
         }
     } else {
         cout << "not found" << endl;
