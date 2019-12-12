@@ -70,7 +70,7 @@ int main() {
         trieMovies.insert(cl.clear_string(name), a);
         
         for(int i=0; i < (int) genre.size(); i++){
-            if(!hashGenres.search(genre[i])){
+            if(!hashGenres.search(cl.clear_string(genre[i]))){
                 hashGenres[cl.clear_string(genre[i])] = new Genre(genre[i], cl.clear_string(genre[i]));
             }
             
@@ -240,6 +240,7 @@ int main() {
             cout << "Title" << "\t\t\t\t\t\t\t" << "Genres" << "\t\t\t\t\t\t\t\t\t" << "Av. Rating" << "\t" << "Rating Count"<< endl;
             cout << "------------------------------------------------------------------------------------------------------------------------------------------------------------" << endl;
             int n = stoi(option.substr(3,option.size()-3));
+            
             int min = 0;
             getline(linha_terminal, option, ' ');
             string genre = option;
@@ -251,6 +252,7 @@ int main() {
             }
             
             genre = cl.clear_string(genre);
+            
             if(hashGenres.search(genre)){
             
                 for(Movie* movie: hashGenres[genre]->getTop(n, min)){
