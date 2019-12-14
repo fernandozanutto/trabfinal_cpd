@@ -22,8 +22,7 @@ string Genre::getIdentifier(){
 
 vector<Movie*> Genre::getTop(int n, int min){
     vector<Movie*> ans;
-
-    if (!isSorted){
+    if(!isSorted){
         sortMovies();
         isSorted = true;
     }

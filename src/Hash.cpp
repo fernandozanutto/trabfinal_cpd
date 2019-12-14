@@ -1,3 +1,6 @@
+#pragma once
+#include "header/Hash.h"
+
 template <class K>
 Hash<K>::Hash(int s){
     size = s;

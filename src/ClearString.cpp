@@ -107,7 +107,7 @@ string ClearString::clear_string(string in){
             new_str += c;
         }
 
-        if ( (c == ' ') && (new_str.back() != ' ') ){
+        if ((c == ' ') && (new_str.back() != ' ')){
             new_str += c;
         }
 
