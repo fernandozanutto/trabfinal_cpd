@@ -48,7 +48,7 @@ Movie* Trie::search(string key){
 }
 
 
-void dfs(vector<Movie*> &ans, TrieNode* node, string key){
+void dfs(vector<Movie*> &ans, TrieNode* node){
 
     if(node->movie != NULL){
         ans.push_back(node->movie);
@@ -57,7 +57,7 @@ void dfs(vector<Movie*> &ans, TrieNode* node, string key){
     for(int i=0; i < ALPHABET_SIZE; i++){
     
         if(node->children[i] != NULL){
-            dfs(ans, node->children[i], key+(char)i);
+            dfs(ans, node->children[i]);
         }
     }
 }
@@ -76,7 +76,7 @@ vector<Movie*> Trie::searchPrefix(string key){
         pCrawl = pCrawl->children[index];
     }
     
-    dfs(ans, pCrawl, key);
+    dfs(ans, pCrawl);
     
     return ans;
 }
